@@ -1,0 +1,11 @@
+{
+  "name": "nodejs-course",
+  "devDependencies": {
+    "nodemon": "^1.18.11"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js",
+    "clean:modules": "rm -rf node_modules"
+  }
+}

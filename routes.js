@@ -31,11 +31,12 @@ const requestHandler = (req, res) => {
       body.push(chunk);
     });
   
-    req.on('end', () => {
+    return req.on('end', () => {
     // Chunks assembled and converted to string
     const parsedBody = Buffer.concat(body).toString();
     // Get the value of the message
-    const message = parsedBody.split('=')[1];
+    const message = parsedBody.split('=')[0];
+    
       // message writted into the file
       fs.writeFile('message.txt', message, (err) => {
         // Set response status code & header
