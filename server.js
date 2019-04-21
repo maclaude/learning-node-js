@@ -25,7 +25,7 @@ const app = express();
 // ! This middleware should always be placed first
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(adminRoutes);
+app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
 // 404 Error Page
