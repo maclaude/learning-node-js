@@ -1,13 +1,9 @@
-/**
- * Require Node JS Core Modules
- */
-// http
-const http = require('http');
-
+/* eslint-disable no-console */
 /**
  * NPM import
  */
 const express = require('express');
+const bodyParser = require('body-parser');
 
 /**
  * Code
@@ -17,18 +13,30 @@ const app = express();
 /**
  * Middleware
  */
-app.use((req, res, next) => {
-  console.log('In the middleware !');
-  // Allow the request to continue to the next middleware in line;
+// Parser (Parsing the incoming request body)
+// ! This middleware should always be placed first
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use('/', (req, res, next) => {
+  console.log('This always runs !');
   next();
 });
 
-app.use((req, res, next) => {
-  console.log('In another middleware');
+app.use('/add-product', (req, res, next) => {
+  console.log('Add Product middleware');
+  res.send('<form action="/product" method="POST"><input type="text" name="title"><button type="submit">Add Product</button></form>');
 });
 
-// Server creation
-const server = http.createServer(app);
+app.use('/product', (req, res, next) => {
+  console.log(req.body);
+  res.redirect('/');
+});
 
-// Server listening requests on port 3000
-server.listen(3000);
+app.use('/', (req, res, next) => {
+  res.send('<h1>Hello from Express !</h1>');
+});
+
+/**
+ * Server
+ */
+app.listen(3000);

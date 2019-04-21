@@ -1,5 +1,7 @@
 {
   "name": "nodejs-course",
+  "version": "1.0.0",
+  "description": "Node JS courses",
   "devDependencies": {
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
@@ -13,6 +15,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "body-parser": "^1.18.3",
     "express": "^4.16.4"
   }
 }
