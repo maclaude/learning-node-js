@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/product.css">
+	<title><%= pageTitle %></title>
+</head>
+
+<body>
+    <header class="main-header">
+        <nav class="main-header__nav">
+            <ul class="main-header__item-list">
+                <li class="main-header__item"><a class="active" href="/">Shop</a></li>
+                <li class="main-header__item"><a href="/admin/add-product">Add Product</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+		<% if (items.length > 0) { %>
+			<div class="grid">
+				<% for (let item of items) { %>
+					<article class="card product-item">
+						<header class="card__header">
+							<h1 class="product__title"><%= item.title %></h1>
+						</header>
+						<div class="card__image">
+							<img src="https://cdn.radiofrance.fr/s3/cruiser-production/2016/11/ac7d7e2c-f708-4140-80a0-4d254f77320f/640_gettyimages-521811839.jpg" alt="A Book">
+						</div>
+						<div class="card__content">
+							<h2 class="product__price">$19.99</h2>
+							<p class="product__description">A very interesting book about so many even more interesting things!</p>
+						</div>
+						<div class="card__actions">
+							<button class="btn">Add to Cart</button>
+						</div>
+					</article>
+				<% } %>
+			</div>
+		<% } else  { %>
+			<h1 class="main-title">No Products Found</h1>
+		<% } %>
+    </main>
+</body>
+
+</html>
