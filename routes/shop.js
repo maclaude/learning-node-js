@@ -24,7 +24,7 @@ const router = express.Router();
 // Middlewares
 router.get('/', (req, res, next) => {
   const { products } = adminData;
-  res.render('shop', { items: products, pageTitle: 'My shop' });
+  res.render('shop', { items: products, pageTitle: 'My shop', path: '/' });
 });
 
 /**
