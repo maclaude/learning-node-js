@@ -24,7 +24,14 @@ const shopRoutes = require('./routes/shop');
 const app = express();
 
 // Initialise express-handlebars view engine
-app.engine('hbs', expressHandlebars());
+app.engine(
+  'hbs',
+  expressHandlebars({
+    layoutsDir: 'views/layouts/',
+    defaultLayout: 'main-layout',
+    extname: 'hbs',
+  }),
+);
 
 // Set view engine configuration
 app.set('view engine', 'hbs');
