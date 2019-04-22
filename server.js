@@ -1,6 +1,10 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 /**
+ * Node Core Modules import
+ */
+const path = require('path');
+/**
  * NPM import
  */
 const express = require('express');
@@ -25,12 +29,15 @@ const app = express();
 // ! This middleware should always be placed first
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Access to the public directory path
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
 // 404 Error Page
 app.use((req, res, next) => {
-  res.status(404).send('<h1>Page not found</h1>');
+  res.status(404).sendFile(path.join(__dirname, 'views', 'not-found.html'));
 });
 
 /**
