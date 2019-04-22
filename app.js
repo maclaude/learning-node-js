@@ -9,6 +9,7 @@ const path = require('path');
  */
 const express = require('express');
 const bodyParser = require('body-parser');
+const expressHandlebars = require('express-handlebars');
 
 /**
  * Local import
@@ -22,8 +23,11 @@ const shopRoutes = require('./routes/shop');
  */
 const app = express();
 
+// Initialise express-handlebars view engine
+app.engine('hbs', expressHandlebars());
+
 // Set view engine configuration
-app.set('view engine', 'pug');
+app.set('view engine', 'hbs');
 // Set views directory path
 app.set('views', 'views');
 
