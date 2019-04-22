@@ -15,6 +15,8 @@ const express = require('express');
  */
 // Utils
 const rootDirectory = require('../utils/path');
+// Data
+const adminData = require('./admin');
 
 /**
  * Code
@@ -23,6 +25,7 @@ const router = express.Router();
 
 // Middlewares
 router.get('/', (req, res, next) => {
+  console.log('shop.js', adminData.products);
   res.sendFile(path.join(rootDirectory, 'views', 'shop.html'));
 });
 
