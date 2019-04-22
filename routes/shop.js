@@ -11,13 +11,19 @@ const path = require('path');
 const express = require('express');
 
 /**
+ * Local import
+ */
+// Utils
+const rootDirectory = require('../utils/path');
+
+/**
  * Code
  */
 const router = express.Router();
 
 // Middlewares
 router.get('/', (req, res, next) => {
-  res.sendFile(path.join(__dirname, '../', 'views', 'shop.html'));
+  res.sendFile(path.join(rootDirectory, 'views', 'shop.html'));
 });
 
 /**

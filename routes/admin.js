@@ -11,6 +11,12 @@ const path = require('path');
 const express = require('express');
 
 /**
+ * Local import
+ */
+// Utils
+const rootDirectory = require('../utils/path');
+
+/**
  * Code
  */
 const router = express.Router();
@@ -19,7 +25,7 @@ const router = express.Router();
 
 // /admin/add-product => GET
 router.get('/add-product', (req, res, next) => {
-  res.sendFile(path.join(__dirname, '../', 'views', 'add-product.html'));
+  res.sendFile(path.join(rootDirectory, 'views', 'add-product.html'));
 });
 
 // /admin/add-product => POST
