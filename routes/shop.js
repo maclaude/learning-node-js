@@ -13,8 +13,6 @@ const express = require('express');
 /**
  * Local import
  */
-// Utils
-const rootDirectory = require('../utils/path');
 // Data
 const adminData = require('./admin');
 
@@ -25,7 +23,8 @@ const router = express.Router();
 
 // Middlewares
 router.get('/', (req, res, next) => {
-  res.render('shop');
+  const { products } = adminData;
+  res.render('shop', { items: products, title: 'My shop' });
 });
 
 /**
