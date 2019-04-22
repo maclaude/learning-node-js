@@ -22,6 +22,11 @@ const shopRoutes = require('./routes/shop');
  */
 const app = express();
 
+// Set view engine configuration
+app.set('view engine', 'pug');
+// Set views directory path
+app.set('views', 'views');
+
 /**
  * Middlewares
  */
