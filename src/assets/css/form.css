@@ -1,17 +1,37 @@
 /* Add Product form */
 
+label {
+  margin-bottom: .4em;
+}
+
 .main-form {
   width: 50%;
   margin: 2em auto;
+  padding: 1em 2em;
   display: flex;
   flex-wrap: wrap;
+  color: #fff;
+}
+
+.main-form-title {
+  font-size: 1.3em;
+  font-weight: 700;
+  margin: 1em auto;
+}
+
+.main-form-control {
+  width: 100%;
+}
+
+.main-form__label {
+  font-weight: 500;
+  padding-left: .5em;
 }
 
 .main-form__input {
   width: 100%;
-  margin: auto;
+  margin: .5em auto;
   padding: .3em;
-  height: 2em;
   border: 0;
   font-family: inherit;
   font-size: 1.2em;

@@ -14,14 +14,19 @@ exports.getAddProduct = (req, res, next) => {
   res.render('admin/add-product', {
     pageTitle: 'Add Product',
     path: '/admin/add-product',
-    activeProducts: true,
-    formCSS: true,
   });
 };
 
 exports.postAddProduct = (req, res, next) => {
+  const {
+    title,
+    imageUrl,
+    description,
+    price,
+  } = req.body;
+
   // Instance Product class
-  const product = new Product(req.body.title);
+  const product = new Product(title, imageUrl, description, price);
   // Saving the instance
   product.save();
   res.redirect('/');
