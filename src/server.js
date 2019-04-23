@@ -27,7 +27,7 @@ const app = express();
 // Set view engine configuration
 app.set('view engine', 'ejs');
 // Set views directory path
-app.set('views', 'views');
+app.set('views', 'src/views');
 
 /**
  * Middlewares
@@ -36,8 +36,8 @@ app.set('views', 'views');
 // ! This middleware should always be placed first
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Access to the public directory path
-app.use(express.static(path.join(__dirname, 'public')));
+// Access to the assets directory path
+app.use(express.static(path.join(__dirname, 'assets')));
 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);

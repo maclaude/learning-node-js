@@ -1,18 +1,18 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 /**
- * Node Core Modules import
- */
-const path = require('path');
-
-/**
  * NPM import
  */
 const express = require('express');
+const dotenv = require('dotenv');
 
 /**
  * Local import
  */
+// Environment variables
+// process.env.PROPSNAME
+dotenv.config();
+
 // Controllers
 const productsController = require('../controllers/products');
 
