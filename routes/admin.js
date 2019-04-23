@@ -13,39 +13,23 @@ const express = require('express');
 /**
  * Local import
  */
-// Utils
-const rootDirectory = require('../utils/path');
+// Controllers
+const productsController = require('../controllers/products');
 
 /**
  * Code
  */
 const router = express.Router();
 
-const products = [];
-
 // Middlewares
 
 // /admin/add-product => GET
-router.get('/add-product', (req, res, next) => {
-  res.render('add-product',
-    {
-      pageTitle: 'Add Product',
-      path: '/admin/add-product',
-      activeProducts: true,
-      formCSS: true,
-    });
-});
+router.get('/add-product', productsController.getAddProduct);
 
 // /admin/add-product => POST
-router.post('/add-product', (req, res, next) => {
-  products.push({
-    title: req.body.title,
-  });
-  res.redirect('/');
-});
+router.post('/add-product', productsController.postAddProduct);
 
 /**
  * Export
  */
-exports.routes = router;
-exports.products = products;
+module.exports = router;

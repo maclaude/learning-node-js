@@ -13,8 +13,8 @@ const express = require('express');
 /**
  * Local import
  */
-// Data
-const adminData = require('./admin');
+// Controllers
+const productsController = require('../controllers/products');
 
 /**
  * Code
@@ -22,20 +22,7 @@ const adminData = require('./admin');
 const router = express.Router();
 
 // Middlewares
-router.get('/', (req, res, next) => {
-  const { products } = adminData;
-  res.render('shop',
-    {
-      items: products,
-      pageTitle: 'My shop',
-      path: '/',
-      hasProducts: products.length > 0,
-      activeShop: true,
-      productCSS: true,
-      // If not using the layout which is by default
-      // layout: false,
-    });
-});
+router.get('/', productsController.getProducts);
 
 /**
  * Export
