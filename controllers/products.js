@@ -29,10 +29,8 @@ exports.postAddProduct = (req, res, next) => {
 
 exports.getProducts = (req, res, next) => {
   // Get all the products
-  const products = Product.fetchAll();
-
-  res.render('shop',
-    {
+  Product.fetchAll((products) => {
+    res.render('shop', {
       items: products,
       pageTitle: 'My shop',
       path: '/',
@@ -42,4 +40,5 @@ exports.getProducts = (req, res, next) => {
       // If not using the layout which is by default
       // layout: false,
     });
+  });
 };
