@@ -4,7 +4,8 @@
 /**
  * Code
  */
-const products = [];
+// Model
+const Product = require('../models/product');
 
 /**
  * Callback functions
@@ -19,13 +20,17 @@ exports.getAddProduct = (req, res, next) => {
 };
 
 exports.postAddProduct = (req, res, next) => {
-  products.push({
-    title: req.body.title,
-  });
+  // Instance Product class
+  const product = new Product(req.body.title);
+  // Saving the instance
+  product.save();
   res.redirect('/');
 };
 
 exports.getProducts = (req, res, next) => {
+  // Get all the products
+  const products = Product.fetchAll();
+
   res.render('shop',
     {
       items: products,
