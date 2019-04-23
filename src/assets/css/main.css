@@ -86,6 +86,8 @@ body {
 .card__actions {
     padding: 1rem;
     text-align: center;
+    display: flex;
+    justify-content: center;
 }
 
 .card__actions button,
