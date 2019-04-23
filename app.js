@@ -13,6 +13,8 @@ const bodyParser = require('body-parser');
 /**
  * Local import
  */
+// Controllers
+const errorsController = require('./controllers/errors');
 // Routes
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
@@ -41,9 +43,7 @@ app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
 // 404 Error Page
-app.use((req, res, next) => {
-  res.status(404).render('not-found', { pageTitle: 'Page not Found' });
-});
+app.use(errorsController.getNotFound);
 
 /**
  * Server
