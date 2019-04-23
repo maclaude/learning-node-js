@@ -11,27 +11,32 @@ const path = require('path');
 /**
  * Code
  */
+// Helper function
+const filePath = path.join(
+  path.dirname(process.mainModule.filename),
+  'data',
+  'products.json',
+);
+
+const getProductsFromFile = (callback) => {
+  fs.readFile(filePath, (err, fileContent) => {
+    if (err) {
+      callback([]);
+    } else {
+      callback(JSON.parse(fileContent));
+    }
+  });
+};
+
+// Class
 module.exports = class Product {
   constructor(title) {
     this.title = title;
   }
 
   save() {
-    const filePath = path.join(
-      path.dirname(process.mainModule.filename),
-      'data',
-      'products.json',
-    );
-
-    fs.readFile(filePath, (err, fileContent) => {
-      let products = [];
-
-      if (!err) {
-        products = JSON.parse(fileContent);
-      }
-
+    getProductsFromFile((products) => {
       products.push(this);
-
       fs.writeFile(filePath, JSON.stringify(products), (err) => {
         console.log(err);
       });
@@ -39,17 +44,6 @@ module.exports = class Product {
   }
 
   static fetchAll(callback) {
-    const filePath = path.join(
-      path.dirname(process.mainModule.filename),
-      'data',
-      'products.json',
-    );
-
-    fs.readFile(filePath, (err, fileContent) => {
-      if (err) {
-        callback([]);
-      }
-      callback(JSON.parse(fileContent));
-    });
+    getProductsFromFile(callback);
   }
 };
