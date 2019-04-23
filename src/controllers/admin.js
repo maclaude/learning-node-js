@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
-// Products Controller
+// Admin Controller
 
 /**
- * Code
+ * Local import
  */
 // Model
 const Product = require('../models/product');
@@ -11,7 +11,7 @@ const Product = require('../models/product');
  * Callback functions
  */
 exports.getAddProduct = (req, res, next) => {
-  res.render('add-product', {
+  res.render('admin/add-product', {
     pageTitle: 'Add Product',
     path: '/admin/add-product',
     activeProducts: true,
@@ -30,15 +30,10 @@ exports.postAddProduct = (req, res, next) => {
 exports.getProducts = (req, res, next) => {
   // Get all the products
   Product.fetchAll((products) => {
-    res.render('shop', {
+    res.render('admin/product-list', {
       items: products,
-      pageTitle: 'My shop',
-      path: '/',
-      hasProducts: products.length > 0,
-      activeShop: true,
-      productCSS: true,
-      // If not using the layout which is by default
-      // layout: false,
+      pageTitle: 'Admin Products',
+      path: '/admin/products',
     });
   });
 };
