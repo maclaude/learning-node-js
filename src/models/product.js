@@ -11,9 +11,12 @@ const path = require('path');
 /**
  * Code
  */
-// Helper function
+// Root directory
+const rootDirectory = path.dirname(process.mainModule.filename);
+
+// products.json data file path
 const filePath = path.join(
-  path.dirname(process.mainModule.filename),
+  rootDirectory,
   'data',
   'products.json',
 );
@@ -28,8 +31,8 @@ const getProductsFromFile = (callback) => {
   });
 };
 
-// Class
-module.exports = class Product {
+
+class Product {
   constructor(title, imageUrl, description, price) {
     this.title = title;
     this.imageUrl = imageUrl;
@@ -44,9 +47,11 @@ module.exports = class Product {
 
     getProductsFromFile((products) => {
       products.push(this);
-      fs.writeFile(filePath, JSON.stringify(products), (err) => {
-        console.log(err);
-      });
+      fs.writeFile(
+        filePath,
+        JSON.stringify(products),
+        err => console.log(err),
+      );
     });
   }
 
@@ -60,4 +65,9 @@ module.exports = class Product {
       callback(product);
     });
   }
-};
+}
+
+/**
+ * Export
+ */
+module.exports = Product;

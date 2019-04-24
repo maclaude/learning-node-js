@@ -6,6 +6,7 @@
  */
 // Models
 const Product = require('../models/product');
+const Cart = require('../models/cart');
 
 /**
  * Callback functions
@@ -51,7 +52,9 @@ exports.getCart = (req, res, next) => {
 
 exports.postCart = (req, res, next) => {
   const { productId } = req.body;
-  console.log(productId);
+  Product.findById(productId, (product) => {
+    Cart.addProduct(productId, product.price);
+  });
   res.redirect('/cart');
 };
 
