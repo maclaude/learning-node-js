@@ -38,6 +38,10 @@ module.exports = class Product {
   }
 
   save() {
+    // Generate an ID for demo purpose
+    // @TODO: replace with an NPM package (uuid)
+    this.id = Math.random().toString();
+
     getProductsFromFile((products) => {
       products.push(this);
       fs.writeFile(filePath, JSON.stringify(products), (err) => {
