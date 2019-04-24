@@ -1,6 +1,6 @@
 body {
   font-family: 'Roboto', sans-serif;
-  background-color: #5D6D7E;
+  background-color: #EAECEE;
   overflow-x : hidden;
 }
 
@@ -47,7 +47,10 @@ body {
   text-align: center;
   margin: 2em;
   font-size: 1.5em;
-  color: white;
+}
+
+.centered {
+  text-align: center;
 }
 
 /* cards */
@@ -61,8 +64,14 @@ body {
 
 .card {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
-  background-color: #F2F3F4;
+  background-color: #fff;
   margin: 2em;
+  padding: .5em;
+  border-radius: 5px;
+}
+
+.card:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.26);
 }
 
 .card__header h1 {
