@@ -27,7 +27,7 @@ exports.postAddProduct = (req, res, next) => {
   } = req.body;
 
   // Instance Product class
-  const product = new Product(title, imageUrl, description, price);
+  const product = new Product(null, title, imageUrl, description, price);
   // Saving the instance
   product.save();
   res.redirect('/');
@@ -55,6 +55,22 @@ exports.getEditProduct = (req, res, next) => {
       }
     });
   }
+};
+
+exports.postEditProject = (req, res, next) => {
+  const {
+    productId,
+    title,
+    imageUrl,
+    description,
+    price,
+  } = req.body;
+
+  const updatedProduct = new Product(productId, title, imageUrl, description, price);
+
+  updatedProduct.save();
+
+  res.redirect('/admin/products');
 };
 
 exports.getProducts = (req, res, next) => {

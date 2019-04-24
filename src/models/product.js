@@ -33,7 +33,8 @@ const getProductsFromFile = (callback) => {
 
 
 class Product {
-  constructor(title, imageUrl, description, price) {
+  constructor(id, title, imageUrl, description, price) {
+    this.id = id;
     this.title = title;
     this.imageUrl = imageUrl;
     this.description = description;
@@ -41,17 +42,35 @@ class Product {
   }
 
   save() {
-    // Generate an ID for demo purpose
-    // @TODO: replace with an NPM package (uuid)
-    this.id = Math.random().toString();
-
     getProductsFromFile((products) => {
-      products.push(this);
-      fs.writeFile(
-        filePath,
-        JSON.stringify(products),
-        err => console.log(err),
-      );
+      if (this.id) {
+        // if id => edit => finding the existing product index in products
+        const existingProductIndex = products.findIndex(
+          product => product.id === this.id,
+        );
+        // Copy of products array
+        const updatedProducts = [...products];
+        // Update of the exsisting product
+        updatedProducts[existingProductIndex] = this;
+        // Write to file
+        fs.writeFile(
+          filePath,
+          JSON.stringify(updatedProducts),
+          err => console.log(err),
+        );
+      } else {
+        // Generate an ID for demo purpose
+        // @TODO: replace with an NPM package (uuid)
+        this.id = Math.random().toString();
+        // Add new product to products array
+        products.push(this);
+        // Write to file
+        fs.writeFile(
+          filePath,
+          JSON.stringify(products),
+          err => console.log(err),
+        );
+      }
     });
   }
 
