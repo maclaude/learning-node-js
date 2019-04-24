@@ -9,10 +9,13 @@ const path = require('path');
  */
 const express = require('express');
 const bodyParser = require('body-parser');
+const dotenv = require('dotenv');
 
 /**
  * Local import
  */
+// Environment variables
+dotenv.config();
 // Controllers
 const errorsController = require('./controllers/errors');
 // Routes
