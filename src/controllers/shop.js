@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 // Products Controller
 
@@ -9,27 +10,34 @@ const Product = require('../models/product');
 const Cart = require('../models/cart');
 
 /**
- * Callback functions
+ * Code
  */
 exports.getIndex = (req, res, next) => {
-  Product.fetchAll((products) => {
-    res.render('shop/index', {
-      items: products,
-      pageTitle: 'Shop',
-      path: '/',
+  Product.fetchAll()
+    .then(([rows]) => {
+      res.render('shop/index', {
+        items: rows,
+        pageTitle: 'Shop',
+        path: '/',
+      });
+    })
+    .catch((err) => {
+      console.log(err);
     });
-  });
 };
 
 exports.getProducts = (req, res, next) => {
-  // Get all the products
-  Product.fetchAll((products) => {
-    res.render('shop/product-list', {
-      items: products,
-      pageTitle: 'Products',
-      path: '/products',
+  Product.fetchAll()
+    .then(([rows]) => {
+      res.render('shop/index', {
+        items: rows,
+        pageTitle: 'Products',
+        path: '/products',
+      });
+    })
+    .catch((err) => {
+      console.log(err);
     });
-  });
 };
 
 exports.getProduct = (req, res, next) => {
