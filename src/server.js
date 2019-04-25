@@ -16,6 +16,8 @@ const dotenv = require('dotenv');
  */
 // Environment variables
 dotenv.config();
+// Database
+const db = require('./utils/database');
 // Controllers
 const errorsController = require('./controllers/errors');
 // Routes
