@@ -5,12 +5,10 @@
 }
 
 .product-details {
-  height: 500px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  margin: 2em;
 }
 
 .product-item {
