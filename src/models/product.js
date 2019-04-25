@@ -29,7 +29,10 @@ class Product {
    * Save
    */
   save() {
-    console.log(this);
+    return db.execute(
+      'INSERT INTO products (title, price, imageUrl, description) VALUES (?, ?, ?, ?)',
+      [this.title, this.price, this.description, this.imageUrl],
+    );
   }
 
   static deleteById(id) {
