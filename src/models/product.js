@@ -9,6 +9,12 @@ const fs = require('fs');
 const path = require('path');
 
 /**
+ * Local import
+ */
+// Models
+const Cart = require('./cart');
+
+/**
  * Code
  */
 // Root directory
@@ -33,6 +39,9 @@ const getProductsFromFile = (callback) => {
 
 
 class Product {
+  /*
+   * Constructor
+   */
   constructor(id, title, imageUrl, description, price) {
     this.id = id;
     this.title = title;
@@ -41,6 +50,9 @@ class Product {
     this.price = price;
   }
 
+  /**
+   * Save
+   */
   save() {
     getProductsFromFile((products) => {
       if (this.id) {
@@ -71,6 +83,21 @@ class Product {
           err => console.log(err),
         );
       }
+    });
+  }
+
+  static deleteById(id) {
+    getProductsFromFile((products) => {
+      // Current product
+      const product = products.find(product => product.id === id);
+      // Remove the product
+      const updatedProducts = products.filter(product => product.id !== id);
+      // Write to file
+      fs.writeFile(filePath, JSON.stringify(updatedProducts), (err) => {
+        if (!err) {
+          Cart.deleteProduct(id, product.price);
+        }
+      });
     });
   }
 

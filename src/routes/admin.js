@@ -29,6 +29,8 @@ router.get('/edit-product/:productId', adminController.getEditProduct);
 
 router.post('/edit-product', adminController.postEditProject);
 
+router.post('/delete-product', adminController.postDeleteProduct);
+
 /**
  * Export
  */
