@@ -41,8 +41,8 @@ app.set('views', 'src/views');
 // ! This middleware should always be placed first
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Access to the assets directory path
-app.use(express.static(path.join(__dirname, 'assets')));
+// Access to the public directory path
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
