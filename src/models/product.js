@@ -1,52 +1,38 @@
-/* eslint-disable no-shadow */
-/* eslint-disable no-console */
-// Product Model
+/**
+ * NPM import
+ */
+const Sequelize = require('sequelize');
 
 /**
  * Local import
  */
-// Database
-const db = require('../utils/database');
-// Models
-// const Cart = require('./cart');
+// Database connection
+const sequelize = require('../utils/database');
 
 /**
  * Code
  */
-class Product {
-  /*
-   * Constructor
-   */
-  constructor(id, title, imageUrl, description, price) {
-    this.id = id;
-    this.title = title;
-    this.imageUrl = imageUrl;
-    this.description = description;
-    this.price = price;
-  }
-
-  /**
-   * Save
-   */
-  save() {
-    return db.execute(
-      'INSERT INTO products (title, price, imageUrl, description) VALUES (?, ?, ?, ?)',
-      [this.title, this.price, this.description, this.imageUrl],
-    );
-  }
-
-  static deleteById(id) {
-    console.log(id);
-  }
-
-  static fetchAll() {
-    return db.execute('SELECT * FROM products');
-  }
-
-  static findById(id) {
-    return db.execute('SELECT * FROM products WHERE products.id = ?', [id]);
-  }
-}
+const Product = sequelize.define('product', {
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    allowNull: false,
+    primaryKey: true,
+  },
+  title: Sequelize.STRING,
+  price: {
+    type: Sequelize.DOUBLE,
+    allowNull: false,
+  },
+  imageUrl: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  description: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+});
 
 /**
  * Export
