@@ -17,7 +17,7 @@ const dotenv = require('dotenv');
 // Environment variables
 dotenv.config();
 // Database
-const db = require('./utils/database');
+const sequelize = require('./utils/database');
 // Controllers
 const errorsController = require('./controllers/errors');
 // Routes
@@ -50,7 +50,14 @@ app.use(shopRoutes);
 // 404 Error Page
 app.use(errorsController.getNotFound);
 
-/**
- * Server
- */
-app.listen(3000);
+// Sync models to the database
+sequelize
+  .sync()
+  .then((result) => {
+    // console.log(result);
+    // Start the server
+    app.listen(3000);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
