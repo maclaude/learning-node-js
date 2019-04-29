@@ -27,14 +27,19 @@ exports.postAddProduct = (req, res, next) => {
     price,
   } = req.body;
 
-  // Instance Product class
-  const product = new Product(null, title, imageUrl, description, price);
-  // Saving the instance
-  product.save()
-    .then(() => {
-      res.redirect('/');
+  Product.create({
+    title,
+    price,
+    imageUrl,
+    description,
+  })
+    .then((result) => {
+      // console.log(result);
+      console.log('Created Product');
     })
-    .catch(err => console.log(err));
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 exports.getEditProduct = (req, res, next) => {
