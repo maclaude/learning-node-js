@@ -18,6 +18,9 @@ const dotenv = require('dotenv');
 dotenv.config();
 // Database
 const sequelize = require('./utils/database');
+// Models
+const Product = require('./models/product');
+const User = require('./models/user');
 // Controllers
 const errorsController = require('./controllers/errors');
 // Routes
@@ -50,9 +53,16 @@ app.use(shopRoutes);
 // 404 Error Page
 app.use(errorsController.getNotFound);
 
+/**
+ * Sequelize
+ */
+// Models association
+Product.belongsTo(User, { constaints: true, onDelete: 'CASCADE' });
+User.hasMany(Product);
+
 // Sync models to the database
 sequelize
-  .sync()
+  .sync({ force: true })
   .then((result) => {
     // console.log(result);
     // Start the server
