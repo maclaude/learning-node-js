@@ -78,8 +78,8 @@ Product.belongsToMany(Cart, { through: CartItem });
 
 // Sync models to the database
 sequelize
-  .sync({ force: true })
-  // .sync()
+  // .sync({ force: true })
+  .sync()
   .then(() => User.findByPk(1))
   .then((user) => {
     // Create a user if not exisiting
@@ -91,11 +91,10 @@ sequelize
     }
     return user;
   })
-  .then((user) => {
-    console.log(user);
-    // Start the server
-    app.listen(3000);
-  })
+  // Create a user cart
+  .then(user => user.createCart())
+  // Start the server
+  .then(() => app.listen(3000))
   .catch((err) => {
     console.log(err);
   });
