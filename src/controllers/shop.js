@@ -79,6 +79,7 @@ exports.postCart = (req, res, next) => {
       let product;
 
       if (products.length > 0) {
+        // eslint-disable-next-line prefer-destructuring
         product = products[0];
       }
 
