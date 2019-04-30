@@ -1,3 +1,4 @@
+/* eslint-disable arrow-body-style */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable no-shadow */
 /* eslint-disable no-console */
@@ -9,7 +10,6 @@
  */
 // Models
 const Product = require('../models/product');
-const Cart = require('../models/cart');
 
 /**
  * Code
@@ -122,6 +122,26 @@ exports.getOrders = (req, res, next) => {
     pageTitle: 'Orders',
     path: '/orders',
   });
+};
+
+exports.postOrder = (req, res, next) => {
+  req.user
+    .getCart()
+    .then(cart => cart.getProducts())
+    .then((products) => {
+      return req.user
+        .createOrder()
+        .then((order) => {
+          return order.addProducts(products.map((product) => {
+            const updatedProduct = product;
+            updatedProduct.orderItem = { quantity: product.cartItem.quantity };
+            return updatedProduct;
+          }));
+        })
+        .catch(err => console.log(err));
+    })
+    .then(() => res.redirect('/orders'))
+    .catch(err => console.log(err));
 };
 
 exports.getCheckout = (req, res, next) => {
