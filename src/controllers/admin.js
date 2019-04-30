@@ -27,12 +27,14 @@ exports.postAddProduct = (req, res, next) => {
     price,
   } = req.body;
 
-  Product.create({
-    title,
-    price,
-    imageUrl,
-    description,
-  })
+  req.user
+    // Method created with the Models association in server.js
+    .createProduct({
+      title,
+      price,
+      imageUrl,
+      description,
+    })
     .then((result) => {
       // console.log(result);
       console.log('Created Product');
