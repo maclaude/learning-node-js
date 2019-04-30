@@ -54,7 +54,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Adding a user to a the request
 app.use((req, res, next) => {
   User.findByPk(1)
-    .then((user) => {
+    .then(user => {
       req.user = user;
       next();
     })
@@ -86,7 +86,7 @@ sequelize
   // .sync({ force: true })
   .sync()
   .then(() => User.findByPk(1))
-  .then((user) => {
+  .then(user => {
     // Create a user if not exisiting
     if (!user) {
       return User.create({
@@ -100,6 +100,6 @@ sequelize
   .then(user => user.createCart())
   // Start the server
   .then(() => app.listen(3000))
-  .catch((err) => {
+  .catch(err => {
     console.log(err);
   });

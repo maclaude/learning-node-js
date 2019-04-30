@@ -13,10 +13,10 @@ const sequelize = new Sequelize(
   {
     dialect: 'mysql',
     host: 'localhost',
-  },
+  }
 );
 
 /**
-* Export
-*/
+ * Export
+ */
 module.exports = sequelize;

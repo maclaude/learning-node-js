@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
 // Admin Controller
 
 /**
@@ -20,12 +18,7 @@ exports.getAddProduct = (req, res, next) => {
 };
 
 exports.postAddProduct = (req, res, next) => {
-  const {
-    title,
-    imageUrl,
-    description,
-    price,
-  } = req.body;
+  const { title, imageUrl, description, price } = req.body;
 
   req.user
     // Method created with the Models association in server.js
@@ -35,12 +28,12 @@ exports.postAddProduct = (req, res, next) => {
       imageUrl,
       description,
     })
-    .then((result) => {
+    .then(result => {
       // console.log(result);
       console.log('Created Product');
       res.redirect('/admin/products');
     })
-    .catch((err) => {
+    .catch(err => {
       console.log(err);
     });
 };
@@ -56,7 +49,7 @@ exports.getEditProduct = (req, res, next) => {
 
     req.user
       .getProducts({ where: { id: productId } })
-      .then((products) => {
+      .then(products => {
         const product = products[0];
         if (!product) {
           res.redirect('/');
@@ -74,16 +67,10 @@ exports.getEditProduct = (req, res, next) => {
 };
 
 exports.postEditProject = (req, res, next) => {
-  const {
-    productId,
-    title,
-    imageUrl,
-    description,
-    price,
-  } = req.body;
+  const { productId, title, imageUrl, description, price } = req.body;
 
   Product.findByPk(productId)
-    .then((product) => {
+    .then(product => {
       const updateProduct = product;
       updateProduct.title = title;
       updateProduct.imageUrl = imageUrl;
@@ -92,7 +79,7 @@ exports.postEditProject = (req, res, next) => {
       // Saving the update
       return updateProduct.save();
     })
-    .then((result) => {
+    .then(result => {
       console.log('Updated product');
       res.redirect('/admin/products');
     })
@@ -103,7 +90,7 @@ exports.getProducts = (req, res, next) => {
   // Get all the products
   req.user
     .getProducts()
-    .then((products) => {
+    .then(products => {
       res.render('admin/product-list', {
         items: products,
         pageTitle: 'Admin Products',
@@ -117,7 +104,7 @@ exports.postDeleteProduct = (req, res, next) => {
   const { productId } = req.body;
   Product.findByPk(productId)
     .then(product => product.destroy())
-    .then((result) => {
+    .then(result => {
       console.log('destroyed product');
       res.redirect('/admin/products');
     })

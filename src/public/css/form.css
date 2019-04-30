@@ -1,7 +1,7 @@
 /* Add Product form */
 
 label {
-  margin-bottom: .4em;
+  margin-bottom: 0.4em;
 }
 
 .main-form {
@@ -24,13 +24,13 @@ label {
 
 .main-form__label {
   font-weight: 500;
-  padding-left: .5em;
+  padding-left: 0.5em;
 }
 
 .main-form__input {
   width: 100%;
-  margin: .5em auto;
-  padding: .3em;
+  margin: 0.5em auto;
+  padding: 0.3em;
   border: 0;
   font-family: inherit;
   font-size: 1.2em;
@@ -44,11 +44,11 @@ label {
   outline: none;
   width: fit-content;
   margin: 1em auto;
-  padding: .5em 2em;
+  padding: 0.5em 2em;
   font-size: 100%;
   font-family: inherit;
   color: #fff;
   font-weight: 500;
-  background-color: #2ECC71;
+  background-color: #2ecc71;
   border-radius: 20px;
 }
