@@ -1,22 +1,31 @@
 /**
  * NPM import
  */
-const Sequelize = require('sequelize');
+const mongodb = require('mongodb');
 
 /**
- * Connection
+ * Connexion
  */
-const sequelize = new Sequelize(
-  process.env.DB_DATABASE,
-  process.env.DB_USERNAME,
-  process.env.DB_PASSWORD,
-  {
-    dialect: 'mysql',
-    host: 'localhost',
-  }
-);
+const { MongoClient } = mongodb;
+
+const mongoConnect = callback => {
+  // Database password
+  const dbPassword = process.env.DB_PASSWORD;
+
+  // Connexion to the database
+  MongoClient.connect(
+    `mongodb+srv://maclaude:${dbPassword}@node-js-qfuuy.mongodb.net/test?retryWrites=true`
+  )
+    .then(client => {
+      console.log('Connected');
+      callback(client);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
 
 /**
  * Export
  */
-module.exports = sequelize;
+module.exports = mongoConnect;

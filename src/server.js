@@ -17,19 +17,12 @@ const dotenv = require('dotenv');
 // Environment variables
 dotenv.config();
 // Database
-const sequelize = require('./utils/database');
-// Models
-const Product = require('./models/product');
-const User = require('./models/user');
-const Cart = require('./models/cart');
-const CartItem = require('./models/cart-item');
-const Order = require('./models/order');
-const OrderItem = require('./models/order-item');
+const mongoConnect = require('./utils/database');
 // Controllers
 const errorsController = require('./controllers/errors');
 // Routes
-const adminRoutes = require('./routes/admin');
-const shopRoutes = require('./routes/shop');
+// const adminRoutes = require('./routes/admin');
+// const shopRoutes = require('./routes/shop');
 
 /**
  * Code
@@ -51,55 +44,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Access to the public directory path
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Adding a user to a the request
-app.use((req, res, next) => {
-  User.findByPk(1)
-    .then(user => {
-      req.user = user;
-      next();
-    })
-    .catch(err => console.log(err));
-});
-
-app.use('/admin', adminRoutes);
-app.use(shopRoutes);
+// app.use('/admin', adminRoutes);
+// app.use(shopRoutes);
 
 // 404 Error Page
 app.use(errorsController.getNotFound);
 
 /**
- * Sequelize
+ * MongoDB
  */
-// Models association
-Product.belongsTo(User, { constaints: true, onDelete: 'CASCADE' });
-User.hasMany(Product);
-User.hasOne(Cart);
-Cart.belongsTo(User);
-Cart.belongsToMany(Product, { through: CartItem });
-Product.belongsToMany(Cart, { through: CartItem });
-Order.belongsTo(User);
-User.hasMany(Order);
-Order.belongsToMany(Product, { through: OrderItem });
-
-// Sync models to the database
-sequelize
-  // .sync({ force: true })
-  .sync()
-  .then(() => User.findByPk(1))
-  .then(user => {
-    // Create a user if not exisiting
-    if (!user) {
-      return User.create({
-        name: 'Marc-Antoine',
-        email: 'claude.marcantoine2@gmail.com',
-      });
-    }
-    return user;
-  })
-  // Create a user cart
-  .then(user => user.createCart())
+mongoConnect(client => {
+  console.log(client);
   // Start the server
-  .then(() => app.listen(3000))
-  .catch(err => {
-    console.log(err);
-  });
+  app.listen(3000);
+});
