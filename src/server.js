@@ -47,6 +47,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Access to the public directory path
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Adding a user to a the request
+app.use((req, res, next) => {
+  User.findByPk(1)
+    .then((user) => {
+      req.user = user;
+      next();
+    })
+    .catch(err => console.log(err));
+});
+
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
@@ -62,9 +72,20 @@ User.hasMany(Product);
 
 // Sync models to the database
 sequelize
-  .sync({ force: true })
-  .then((result) => {
-    // console.log(result);
+  .sync()
+  .then(() => User.findByPk(1))
+  .then((user) => {
+    // Create a user if not exisiting
+    if (!user) {
+      return User.create({
+        name: 'Marc-Antoine',
+        email: 'claude.marcantoine2@gmail.com',
+      });
+    }
+    return user;
+  })
+  .then((user) => {
+    console.log(user);
     // Start the server
     app.listen(3000);
   })
