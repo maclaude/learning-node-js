@@ -84,13 +84,15 @@ exports.postEditProject = (req, res, next) => {
 
 exports.getProducts = (req, res, next) => {
   // Get all the products
-  Product.fetchAll((products) => {
-    res.render('admin/product-list', {
-      items: products,
-      pageTitle: 'Admin Products',
-      path: '/admin/products',
-    });
-  });
+  Product.findAll()
+    .then((products) => {
+      res.render('admin/product-list', {
+        items: products,
+        pageTitle: 'Admin Products',
+        path: '/admin/products',
+      });
+    })
+    .catch(err => console.log(err));
 };
 
 exports.postDeleteProduct = (req, res, next) => {

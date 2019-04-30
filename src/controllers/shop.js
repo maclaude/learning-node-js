@@ -38,12 +38,12 @@ exports.getProducts = (req, res, next) => {
 
 exports.getProduct = (req, res, next) => {
   const { productId } = req.params;
-  Product.findAll({ where: { id: productId } })
-    .then((products) => {
+  Product.findByPk(productId)
+    .then((product) => {
       res.render('shop/product-detail', {
-        pageTitle: products[0].title,
+        pageTitle: product.title,
         path: '/products',
-        item: products[0],
+        item: product,
       });
     })
     .catch(err => console.log(err));
