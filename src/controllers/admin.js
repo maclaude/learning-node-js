@@ -51,18 +51,20 @@ exports.getEditProduct = (req, res, next) => {
   } else {
     const { productId } = req.params;
 
-    Product.findById(productId, (product) => {
-      if (!product) {
-        res.redirect('/');
-      } else {
-        res.render('admin/edit-product', {
-          pageTitle: 'Edit Product',
-          path: '/admin/edit-product',
-          editing: editMode,
-          item: product,
-        });
-      }
-    });
+    Product.findByPk(productId)
+      .then((product) => {
+        if (!product) {
+          res.redirect('/');
+        } else {
+          res.render('admin/edit-product', {
+            pageTitle: 'Edit Product',
+            path: '/admin/edit-product',
+            editing: editMode,
+            item: product,
+          });
+        }
+      })
+      .catch(err => console.log(err));
   }
 };
 
@@ -75,11 +77,21 @@ exports.postEditProject = (req, res, next) => {
     price,
   } = req.body;
 
-  const updatedProduct = new Product(productId, title, imageUrl, description, price);
-
-  updatedProduct.save();
-
-  res.redirect('/admin/products');
+  Product.findByPk(productId)
+    .then((product) => {
+      const updateProduct = product;
+      updateProduct.title = title;
+      updateProduct.imageUrl = imageUrl;
+      updateProduct.description = description;
+      updateProduct.pruce = price;
+      // Saving the update
+      return updateProduct.save();
+    })
+    .then((result) => {
+      console.log('Updated product');
+      res.redirect('/admin/products');
+    })
+    .catch(err => console.log(err));
 };
 
 exports.getProducts = (req, res, next) => {
