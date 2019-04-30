@@ -21,6 +21,8 @@ const sequelize = require('./utils/database');
 // Models
 const Product = require('./models/product');
 const User = require('./models/user');
+const Cart = require('./models/cart');
+const CartItem = require('./models/cart-item');
 // Controllers
 const errorsController = require('./controllers/errors');
 // Routes
@@ -69,10 +71,15 @@ app.use(errorsController.getNotFound);
 // Models association
 Product.belongsTo(User, { constaints: true, onDelete: 'CASCADE' });
 User.hasMany(Product);
+User.hasOne(Cart);
+Cart.belongsTo(User);
+Cart.belongsToMany(Product, { through: CartItem });
+Product.belongsToMany(Cart, { through: CartItem });
 
 // Sync models to the database
 sequelize
-  .sync()
+  .sync({ force: true })
+  // .sync()
   .then(() => User.findByPk(1))
   .then((user) => {
     // Create a user if not exisiting
