@@ -13,7 +13,18 @@ class Product {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  save() {}
+  save() {
+    const db = getDatabase();
+    return db
+      .collection('products')
+      .insertOne(this)
+      .then(result => {
+        console.log(result);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
 }
 
 /**

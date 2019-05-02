@@ -21,7 +21,7 @@ const { mongoConnect } = require('./utils/database');
 // Controllers
 const errorsController = require('./controllers/errors');
 // Routes
-// const adminRoutes = require('./routes/admin');
+const adminRoutes = require('./routes/admin');
 // const shopRoutes = require('./routes/shop');
 
 /**
@@ -44,7 +44,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Access to the public directory path
 app.use(express.static(path.join(__dirname, 'public')));
 
-// app.use('/admin', adminRoutes);
+app.use('/admin', adminRoutes);
 // app.use(shopRoutes);
 
 // 404 Error Page

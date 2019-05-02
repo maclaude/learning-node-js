@@ -43,4 +43,4 @@ const getDatabase = () => {
  * Export
  */
 exports.mongoConnect = mongoConnect;
-exports.getDB = getDatabase;
+exports.getDatabase = getDatabase;
