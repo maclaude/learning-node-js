@@ -17,7 +17,7 @@ const dotenv = require('dotenv');
 // Environment variables
 dotenv.config();
 // Database
-const mongoConnect = require('./utils/database');
+const { mongoConnect } = require('./utils/database');
 // Controllers
 const errorsController = require('./controllers/errors');
 // Routes
@@ -53,8 +53,7 @@ app.use(errorsController.getNotFound);
 /**
  * MongoDB
  */
-mongoConnect(client => {
-  console.log(client);
+mongoConnect(() => {
   // Start the server
   app.listen(3000);
 });
