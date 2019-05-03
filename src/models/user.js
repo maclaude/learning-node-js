@@ -37,8 +37,29 @@ class User {
   addToCart(product) {
     const { _id } = product;
 
+    // Finding if the product is already in the cart
+    const cartProductIndex = this.cart.items.findIndex(item => {
+      return item.productId.toString() === _id.toString();
+    });
+    // Init quantity
+    let newQuantity = 1;
+    // Copying the cart
+    const updatedCartItems = [...this.cart.items];
+
+    if (cartProductIndex >= 0) {
+      // Incrementing the quantity
+      newQuantity = this.cart.items[cartProductIndex].quantity + 1;
+      updatedCartItems[cartProductIndex].quantity = newQuantity;
+    } else {
+      // Add product to the cart
+      updatedCartItems.push({
+        productId: new ObjectId(_id),
+        quantity: newQuantity,
+      });
+    }
+
     const updatedCart = {
-      items: [{ productId: new ObjectId(_id), quantity: 1 }],
+      items: updatedCartItems,
     };
     const db = getDatabase();
 
