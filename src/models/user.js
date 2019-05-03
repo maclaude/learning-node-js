@@ -13,10 +13,15 @@ const { getDatabase } = require('../utils/database');
 /**
  * Code
  */
+// Extraction of the MongoDB ObjectId constructor
+const { ObjectId } = mongodb;
+
 class User {
-  constructor(username, email) {
+  constructor(username, email, id, cart) {
     this.username = username;
     this.email = email;
+    this._id = id;
+    this.cart = cart;
   }
 
   save() {
@@ -29,11 +34,23 @@ class User {
       .catch(err => console.log(err));
   }
 
+  addToCart(product) {
+    const updatedCart = { items: [{ ...product, quantity: 1 }] };
+    const db = getDatabase();
+
+    return db
+      .collection('users')
+      .updateOne(
+        { _id: new ObjectId(this._id) },
+        { $set: { cart: updatedCart } }
+      );
+  }
+
   static findById(userId) {
     const db = getDatabase();
     return db
       .collection('users')
-      .find({ _id: new mongodb.ObjectId(userId) })
+      .find({ _id: new ObjectId(userId) })
       .next()
       .then(user => {
         console.log(user);
