@@ -4,6 +4,9 @@
 // Database access
 const { getDatabase } = require('../utils/database');
 
+/**
+ * Code
+ */
 class Product {
   constructor(title, price, imageUrl, description) {
     this.title = title;
@@ -12,7 +15,6 @@ class Product {
     this.description = description;
   }
 
-  // eslint-disable-next-line class-methods-use-this
   save() {
     const db = getDatabase();
     return db
@@ -24,6 +26,19 @@ class Product {
       .catch(err => {
         console.log(err);
       });
+  }
+
+  static fetchAll() {
+    const db = getDatabase();
+    return db
+      .collection('products')
+      .find()
+      .toArray()
+      .then(products => {
+        console.log(products);
+        return products;
+      })
+      .catch(err => console.log(err));
   }
 }
 

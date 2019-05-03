@@ -22,7 +22,7 @@ const { mongoConnect } = require('./utils/database');
 const errorsController = require('./controllers/errors');
 // Routes
 const adminRoutes = require('./routes/admin');
-// const shopRoutes = require('./routes/shop');
+const shopRoutes = require('./routes/shop');
 
 /**
  * Code
@@ -45,7 +45,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/admin', adminRoutes);
-// app.use(shopRoutes);
+app.use(shopRoutes);
 
 // 404 Error Page
 app.use(errorsController.getNotFound);
