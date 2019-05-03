@@ -1,10 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
-/**
- * Node Core Modules import
- */
-const path = require('path');
-
 /**
  * NPM import
  */
@@ -36,7 +29,7 @@ router.post('/cart', shopController.postCart);
 
 router.post('/cart-delete-item', shopController.postCartDeleteProduct);
 
-// router.post('/create-order', shopController.postOrder);
+router.post('/create-order', shopController.postOrder);
 
 // router.get('/orders', shopController.getOrders);
 
