@@ -85,13 +85,13 @@ exports.postEditProject = (req, res, next) => {
     .catch(err => console.log(err));
 };
 
-// exports.postDeleteProduct = (req, res, next) => {
-//   const { productId } = req.body;
-//   Product.findByPk(productId)
-//     .then(product => product.destroy())
-//     .then(result => {
-//       console.log('destroyed product');
-//       res.redirect('/admin/products');
-//     })
-//     .catch(err => console.log(err));
-// };
+exports.postDeleteProduct = (req, res, next) => {
+  const { productId } = req.body;
+
+  Product.deleteById(productId)
+    .then(result => {
+      console.log('product deleted');
+      res.redirect('/admin/products');
+    })
+    .catch(err => console.log(err));
+};
