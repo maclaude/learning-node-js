@@ -37,12 +37,8 @@ class Product {
     }
 
     return dbOp
-      .then(result => {
-        console.log(result);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+      .then(result => console.log(result))
+      .catch(err => console.log(err));
   }
 
   static fetchAll() {
@@ -76,9 +72,7 @@ class Product {
     return db
       .collection('products')
       .deleteOne({ _id: new mongodb.ObjectId(productId) })
-      .then(result => {
-        console.log('product deleted');
-      })
+      .then(result => console.log('product deleted'))
       .catch(err => console.log(err));
   }
 }

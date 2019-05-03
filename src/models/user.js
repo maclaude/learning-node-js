@@ -1,33 +1,47 @@
 /**
  * NPM import
  */
-const Sequelize = require('sequelize');
+// MongoDB
+const mongodb = require('mongodb');
 
 /**
  * Local import
  */
-// Database connection
-const sequelize = require('../utils/database');
+// Database access
+const { getDatabase } = require('../utils/database');
 
 /**
  * Code
  */
-const User = sequelize.define('user', {
-  id: {
-    type: Sequelize.INTEGER,
-    autoIncrement: true,
-    allowNull: false,
-    primaryKey: true,
-  },
-  name: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  email: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-});
+class User {
+  constructor(username, email) {
+    this.username = username;
+    this.email = email;
+  }
+
+  save() {
+    const db = getDatabase();
+
+    return db
+      .collection('users')
+      .insertOne(this)
+      .then(result => console.log(result))
+      .catch(err => console.log(err));
+  }
+
+  static findById(userId) {
+    const db = getDatabase();
+    return db
+      .collection('users')
+      .find({ _id: new mongodb.ObjectId(userId) })
+      .next()
+      .then(user => {
+        console.log(user);
+        return user;
+      })
+      .catch(err => console.log(err));
+  }
+}
 
 /**
  * Export
