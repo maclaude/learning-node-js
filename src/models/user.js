@@ -35,7 +35,11 @@ class User {
   }
 
   addToCart(product) {
-    const updatedCart = { items: [{ ...product, quantity: 1 }] };
+    const { _id } = product;
+
+    const updatedCart = {
+      items: [{ productId: new ObjectId(_id), quantity: 1 }],
+    };
     const db = getDatabase();
 
     return db
