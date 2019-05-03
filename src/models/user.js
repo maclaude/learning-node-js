@@ -118,9 +118,17 @@ class User {
   addOrder() {
     const db = getDatabase();
 
-    return db
-      .collection('orders')
-      .insertOne(this.cart)
+    return this.getCart()
+      .then(products => {
+        const order = {
+          items: products,
+          user: {
+            _id: new ObjectId(this._id),
+            username: this.username,
+          },
+        };
+        return db.collection('orders').insertOne(order);
+      })
       .then(result => {
         this.cart = { items: [] };
         // Update the user cart
