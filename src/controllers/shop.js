@@ -33,18 +33,19 @@ exports.getProducts = (req, res, next) => {
     .catch(err => console.log(err));
 };
 
-// exports.getProduct = (req, res, next) => {
-//   const { productId } = req.params;
-//   Product.findByPk(productId)
-//     .then(product => {
-//       res.render('shop/product-detail', {
-//         pageTitle: product.title,
-//         path: '/products',
-//         item: product,
-//       });
-//     })
-//     .catch(err => console.log(err));
-// };
+exports.getProduct = (req, res, next) => {
+  console.log(req);
+  const { productId } = req.params;
+  Product.findById(productId)
+    .then(product => {
+      res.render('shop/product-detail', {
+        pageTitle: product.title,
+        path: '/products',
+        item: product,
+      });
+    })
+    .catch(err => console.log(err));
+};
 
 // exports.getCart = (req, res, next) => {
 //   req.user
