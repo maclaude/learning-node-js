@@ -86,13 +86,32 @@ class User {
     const updatedCart = {
       items: updatedCartItems,
     };
+
     const db = getDatabase();
 
+    // Update the cart
     return db
       .collection('users')
       .updateOne(
         { _id: new ObjectId(this._id) },
         { $set: { cart: updatedCart } }
+      );
+  }
+
+  deleteCartItem(productId) {
+    // Deleting the product
+    const updatedCartItems = this.cart.items.filter(item => {
+      return item.productId.toString() !== productId.toString();
+    });
+
+    const db = getDatabase();
+
+    // Update the cart
+    return db
+      .collection('users')
+      .updateOne(
+        { _id: new ObjectId(this._id) },
+        { $set: { cart: { items: updatedCartItems } } }
       );
   }
 
