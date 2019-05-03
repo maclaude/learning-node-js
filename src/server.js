@@ -46,15 +46,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Access to the public directory path
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Store a user in a request
-app.user((req, res, next) => {
+// Store the user in request
+app.use((req, res, next) => {
   User.findById('5ccc41a3a6c9ea06c8c15589')
     .then(user => {
       req.user = user;
       next();
     })
     .catch(err => console.log(err));
-  next();
 });
 
 app.use('/admin', adminRoutes);
