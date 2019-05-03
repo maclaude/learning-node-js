@@ -1,12 +1,6 @@
 // Admin Controller
 
 /**
- * NPM import
- */
-// MongoDB
-const mongodb = require('mongodb');
-
-/**
  * Local import
  */
 // Models
@@ -15,9 +9,6 @@ const Product = require('../models/product');
 /**
  * Code
  */
-// Extraction of the MongoDB ObjectId constructor
-const { ObjectId } = mongodb;
-
 exports.getAddProduct = (req, res, next) => {
   res.render('admin/edit-product', {
     pageTitle: 'Add Product',
@@ -83,13 +74,7 @@ exports.getEditProduct = (req, res, next) => {
 exports.postEditProject = (req, res, next) => {
   const { title, price, imageUrl, description, productId } = req.body;
 
-  const product = new Product(
-    title,
-    price,
-    imageUrl,
-    description,
-    new ObjectId(productId)
-  );
+  const product = new Product(title, price, imageUrl, description, productId);
 
   product
     .save()
