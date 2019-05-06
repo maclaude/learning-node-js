@@ -76,7 +76,16 @@ const getEditProduct = (req, res, next) => {
 const postEditProject = (req, res, next) => {
   const { title, price, imageUrl, description, productId } = req.body;
 
-  const product = new Product(title, price, imageUrl, description, productId);
+  const { _id } = req.user;
+
+  const product = new Product(
+    title,
+    price,
+    imageUrl,
+    description,
+    productId,
+    _id
+  );
 
   product
     .save()
