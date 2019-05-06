@@ -57,13 +57,20 @@ userSchema.methods.addToCart = function addToCart(product) {
     });
   }
 
-  const updatedCart = {
-    items: updatedCartItems,
-  };
-
-  this.cart = updatedCart;
+  this.cart.items = updatedCartItems;
 
   // Update the cart
+  return this.save();
+};
+
+userSchema.methods.deleteCartItem = function deleteCartItem(productId) {
+  // Deleting the product
+  const updatedCartItems = this.cart.items.filter(item => {
+    return item.productId.toString() !== productId.toString();
+  });
+
+  this.cart.items = updatedCartItems;
+
   return this.save();
 };
 
