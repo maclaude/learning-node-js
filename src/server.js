@@ -11,12 +11,11 @@ import path from 'path';
 import express from 'express';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
+import mongoose from 'mongoose';
 
 /**
  * Local import
  */
-// Database
-import { mongoConnect } from './utils/database';
 // Models
 import User from './models/user';
 // Controllers middleware functions
@@ -67,9 +66,19 @@ app.use(shopRoutes);
 app.use(getNotFound);
 
 /**
- * MongoDB
+ * Database connexion with Mongoose
  */
-mongoConnect(() => {
-  // Start the server
-  app.listen(3000);
-});
+// Database password
+const dbPassword = process.env.DB_PASSWORD;
+
+mongoose
+  .connect(
+    `mongodb+srv://maclaude:${dbPassword}@node-js-qfuuy.mongodb.net/shop?retryWrites=true`,
+    { useNewUrlParser: true }
+  )
+  .then(result => {
+    console.log('Connected');
+    // Start the server
+    app.listen(3000);
+  })
+  .catch(err => console.error(err));

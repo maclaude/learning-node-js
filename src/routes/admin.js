@@ -24,17 +24,17 @@ const router = express.Router();
 /**
  * Routes
  */
-router.get('/add-product', getAddProduct);
+// router.get('/add-product', getAddProduct);
 
-router.post('/add-product', postAddProduct);
+// router.post('/add-product', postAddProduct);
 
-router.get('/products', getProducts);
+// router.get('/products', getProducts);
 
-router.get('/edit-product/:productId', getEditProduct);
+// router.get('/edit-product/:productId', getEditProduct);
 
-router.post('/edit-product', postEditProject);
+// router.post('/edit-product', postEditProject);
 
-router.post('/delete-product', postDeleteProduct);
+// router.post('/delete-product', postDeleteProduct);
 
 /**
  * Export
