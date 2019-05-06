@@ -41,7 +41,13 @@ const postAddProduct = (req, res, next) => {
 
 const getProducts = (req, res, next) => {
   Product.find()
+    // With Mongoose, retrieve only the object data you want to receive
+    .select('title price -_id')
+    // If there is a relation, use populate to retrieve the data of this relation
+    // specificy the fields in a second argument
+    .populate('userId', 'name')
     .then(products => {
+      console.log(products);
       res.render('admin/product-list', {
         items: products,
         pageTitle: 'Admin Products',
