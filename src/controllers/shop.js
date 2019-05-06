@@ -49,8 +49,10 @@ const getProduct = (req, res, next) => {
 
 const getCart = (req, res, next) => {
   req.user
-    .getCart()
-    .then(products => {
+    .populate('cart.items.productId') // To get the data of the relation
+    .execPopulate() // In order to get a promise
+    .then(user => {
+      const products = user.cart.items;
       res.render('shop/cart', {
         pageTitle: 'Cart',
         path: '/cart',
