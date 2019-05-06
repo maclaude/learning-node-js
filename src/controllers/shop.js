@@ -5,6 +5,7 @@
  */
 // Models
 import Product from '../models/product';
+import Order from '../models/order';
 
 /**
  * Code
@@ -100,8 +101,25 @@ const getOrders = (req, res, next) => {
 
 const postOrder = (req, res, next) => {
   req.user
-    .addOrder()
-    .then(() => res.redirect('/orders'))
+    .populate('cart.items.productId')
+    .execPopulate()
+    .then(user => {
+      const products = user.cart.items.map(item => {
+        // eslint-disable-next-line no-underscore-dangle
+        return { product: { ...item.productId._doc }, quantity: item.quantity };
+      });
+
+      const order = new Order({
+        products,
+        user: {
+          name: req.user.name,
+          userId: req.user,
+        },
+      });
+
+      return order.save();
+    })
+    .then(result => res.redirect('/orders'))
     .catch(err => console.error(err));
 };
 
