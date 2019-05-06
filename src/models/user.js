@@ -74,6 +74,11 @@ userSchema.methods.deleteCartItem = function deleteCartItem(productId) {
   return this.save();
 };
 
+userSchema.methods.clearCart = function clearCart() {
+  this.cart = { items: [] };
+  return this.save();
+};
+
 /**
  * Export
  */

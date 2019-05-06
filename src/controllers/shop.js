@@ -119,7 +119,8 @@ const postOrder = (req, res, next) => {
 
       return order.save();
     })
-    .then(result => res.redirect('/orders'))
+    .then(result => req.user.clearCart())
+    .then(() => res.redirect('/orders'))
     .catch(err => console.error(err));
 };
 
