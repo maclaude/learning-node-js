@@ -34,7 +34,7 @@ router.get('/edit-product/:productId', getEditProduct);
 
 router.post('/edit-product', postEditProject);
 
-// router.post('/delete-product', postDeleteProduct);
+router.post('/delete-product', postDeleteProduct);
 
 /**
  * Export
