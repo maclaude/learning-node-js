@@ -28,11 +28,11 @@ router.get('/add-product', getAddProduct);
 
 router.post('/add-product', postAddProduct);
 
-// router.get('/products', getProducts);
+router.get('/products', getProducts);
 
-// router.get('/edit-product/:productId', getEditProduct);
+router.get('/edit-product/:productId', getEditProduct);
 
-// router.post('/edit-product', postEditProject);
+router.post('/edit-product', postEditProject);
 
 // router.post('/delete-product', postDeleteProduct);
 
