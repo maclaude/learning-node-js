@@ -1,3 +1,37 @@
+/**
+ * NPM import
+ */
+import mongoose from 'mongoose';
+
+/**
+ * Code
+ */
+const { Schema } = mongoose;
+
+const userSchema = new Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+  cart: {
+    items: [
+      {
+        productId: { type: Schema.Types.ObjectId, required: true },
+        quantity: { type: Number, required: true },
+      },
+    ],
+  },
+});
+
+/**
+ * Export
+ */
+export default mongoose.model('User', userSchema);
+
 // /**
 //  * NPM import
 //  */
