@@ -1,13 +1,22 @@
 /**
  * NPM import
  */
-const express = require('express');
+import express from 'express';
 
 /**
  * Local import
  */
-// Controllers
-const shopController = require('../controllers/shop');
+// Controllers middleware functions
+import {
+  getIndex,
+  getProducts,
+  getProduct,
+  getCart,
+  postCart,
+  postCartDeleteProduct,
+  postOrder,
+  getOrders,
+} from '../controllers/shop';
 
 /**
  * Code
@@ -17,23 +26,23 @@ const router = express.Router();
 /**
  * Routes
  */
-router.get('/', shopController.getIndex);
+router.get('/', getIndex);
 
-router.get('/products', shopController.getProducts);
+router.get('/products', getProducts);
 
-router.get('/products/:productId', shopController.getProduct);
+router.get('/products/:productId', getProduct);
 
-router.get('/cart', shopController.getCart);
+router.get('/cart', getCart);
 
-router.post('/cart', shopController.postCart);
+router.post('/cart', postCart);
 
-router.post('/cart-delete-item', shopController.postCartDeleteProduct);
+router.post('/cart-delete-item', postCartDeleteProduct);
 
-router.post('/create-order', shopController.postOrder);
+router.post('/create-order', postOrder);
 
-router.get('/orders', shopController.getOrders);
+router.get('/orders', getOrders);
 
 /**
  * Export
  */
-module.exports = router;
+export default router;

@@ -2,13 +2,13 @@
  * NPM import
  */
 // MongoDB
-const mongodb = require('mongodb');
+import mongodb from 'mongodb';
 
 /**
  * Local import
  */
 // Database access
-const { getDatabase } = require('../utils/database');
+import { getDatabase } from '../utils/database';
 
 /**
  * Code
@@ -31,7 +31,7 @@ class User {
       .collection('users')
       .insertOne(this)
       .then(result => console.log(result))
-      .catch(err => console.log(err));
+      .catch(err => console.error(err));
   }
 
   getCart() {
@@ -159,11 +159,11 @@ class User {
         console.log(user);
         return user;
       })
-      .catch(err => console.log(err));
+      .catch(err => console.error(err));
   }
 }
 
 /**
  * Export
  */
-module.exports = User;
+export default User;

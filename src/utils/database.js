@@ -1,7 +1,7 @@
 /**
  * NPM import
  */
-const mongodb = require('mongodb');
+import mongodb from 'mongodb';
 
 /**
  * Connexion
@@ -21,12 +21,12 @@ const mongoConnect = callback => {
   )
     .then(client => {
       console.log('Connected');
-      // Access to the database shop
+      // Access to the database 'shop'
       database = client.db();
       callback(client);
     })
     .catch(err => {
-      console.log(err);
+      console.error(err);
       throw err;
     });
 };
@@ -42,5 +42,4 @@ const getDatabase = () => {
 /**
  * Export
  */
-exports.mongoConnect = mongoConnect;
-exports.getDatabase = getDatabase;
+export { mongoConnect, getDatabase };

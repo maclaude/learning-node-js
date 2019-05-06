@@ -4,12 +4,12 @@
  * Local import
  */
 // Models
-const Product = require('../models/product');
+import Product from '../models/product';
 
 /**
  * Code
  */
-exports.getIndex = (req, res, next) => {
+const getIndex = (req, res, next) => {
   Product.fetchAll()
     .then(products => {
       res.render('shop/index', {
@@ -18,10 +18,10 @@ exports.getIndex = (req, res, next) => {
         path: '/',
       });
     })
-    .catch(err => console.log(err));
+    .catch(err => console.error(err));
 };
 
-exports.getProducts = (req, res, next) => {
+const getProducts = (req, res, next) => {
   Product.fetchAll()
     .then(products => {
       res.render('shop/index', {
@@ -30,10 +30,10 @@ exports.getProducts = (req, res, next) => {
         path: '/products',
       });
     })
-    .catch(err => console.log(err));
+    .catch(err => console.error(err));
 };
 
-exports.getProduct = (req, res, next) => {
+const getProduct = (req, res, next) => {
   const { productId } = req.params;
 
   Product.findById(productId)
@@ -44,10 +44,10 @@ exports.getProduct = (req, res, next) => {
         item: product,
       });
     })
-    .catch(err => console.log(err));
+    .catch(err => console.error(err));
 };
 
-exports.getCart = (req, res, next) => {
+const getCart = (req, res, next) => {
   req.user
     .getCart()
     .then(products => {
@@ -57,10 +57,10 @@ exports.getCart = (req, res, next) => {
         products,
       });
     })
-    .catch(err => console.log(err));
+    .catch(err => console.error(err));
 };
 
-exports.postCart = (req, res, next) => {
+const postCart = (req, res, next) => {
   const { productId } = req.body;
 
   Product.findById(productId)
@@ -71,19 +71,19 @@ exports.postCart = (req, res, next) => {
       console.log(result);
       res.redirect('/cart');
     })
-    .catch(err => console.log(err));
+    .catch(err => console.error(err));
 };
 
-exports.postCartDeleteProduct = (req, res, next) => {
+const postCartDeleteProduct = (req, res, next) => {
   const { productId } = req.body;
 
   req.user
     .deleteCartItem(productId)
     .then(result => res.redirect('/cart'))
-    .catch(err => console.log(err));
+    .catch(err => console.error(err));
 };
 
-exports.getOrders = (req, res, next) => {
+const getOrders = (req, res, next) => {
   req.user
     .getOrders()
     .then(orders => {
@@ -93,12 +93,26 @@ exports.getOrders = (req, res, next) => {
         orders,
       });
     })
-    .catch(err => console.log(err));
+    .catch(err => console.error(err));
 };
 
-exports.postOrder = (req, res, next) => {
+const postOrder = (req, res, next) => {
   req.user
     .addOrder()
     .then(() => res.redirect('/orders'))
-    .catch(err => console.log(err));
+    .catch(err => console.error(err));
+};
+
+/**
+ * Export
+ */
+export {
+  getIndex,
+  getProducts,
+  getProduct,
+  getCart,
+  postCart,
+  postCartDeleteProduct,
+  getOrders,
+  postOrder,
 };

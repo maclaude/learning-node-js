@@ -3,32 +3,35 @@
 /**
  * Node Core Modules import
  */
-const path = require('path');
+import path from 'path';
+
 /**
  * NPM import
  */
-const express = require('express');
-const bodyParser = require('body-parser');
-const dotenv = require('dotenv');
+import express from 'express';
+import bodyParser from 'body-parser';
+import dotenv from 'dotenv';
 
 /**
  * Local import
  */
-// Environment variables
-dotenv.config();
 // Database
-const { mongoConnect } = require('./utils/database');
+import { mongoConnect } from './utils/database';
 // Models
-const User = require('./models/user');
-// Controllers
-const errorsController = require('./controllers/errors');
+import User from './models/user';
+// Controllers middleware functions
+import getNotFound from './controllers/errors';
 // Routes
-const adminRoutes = require('./routes/admin');
-const shopRoutes = require('./routes/shop');
+import adminRoutes from './routes/admin';
+import shopRoutes from './routes/shop';
 
 /**
  * Code
  */
+// Environment variables
+dotenv.config();
+
+// Init express
 const app = express();
 
 // Set view engine configuration
@@ -54,14 +57,14 @@ app.use((req, res, next) => {
       req.user = new User(username, email, _id, cart);
       next();
     })
-    .catch(err => console.log(err));
+    .catch(err => console.error(err));
 });
 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
 // 404 Error Page
-app.use(errorsController.getNotFound);
+app.use(getNotFound);
 
 /**
  * MongoDB

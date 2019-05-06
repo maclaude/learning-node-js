@@ -4,12 +4,12 @@
  * Local import
  */
 // Models
-const Product = require('../models/product');
+import Product from '../models/product';
 
 /**
  * Code
  */
-exports.getAddProduct = (req, res, next) => {
+const getAddProduct = (req, res, next) => {
   res.render('admin/edit-product', {
     pageTitle: 'Add Product',
     path: '/admin/add-product',
@@ -17,7 +17,7 @@ exports.getAddProduct = (req, res, next) => {
   });
 };
 
-exports.postAddProduct = (req, res, next) => {
+const postAddProduct = (req, res, next) => {
   const { title, imageUrl, description, price } = req.body;
 
   const { _id } = req.user;
@@ -31,11 +31,11 @@ exports.postAddProduct = (req, res, next) => {
       res.redirect('/admin/products');
     })
     .catch(err => {
-      console.log(err);
+      console.error(err);
     });
 };
 
-exports.getProducts = (req, res, next) => {
+const getProducts = (req, res, next) => {
   Product.fetchAll()
     .then(products => {
       res.render('admin/product-list', {
@@ -44,10 +44,10 @@ exports.getProducts = (req, res, next) => {
         path: '/admin/products',
       });
     })
-    .catch(err => console.log(err));
+    .catch(err => console.error(err));
 };
 
-exports.getEditProduct = (req, res, next) => {
+const getEditProduct = (req, res, next) => {
   // Adding a query parameter (optionnal)
   const editMode = req.query.edit;
 
@@ -69,11 +69,11 @@ exports.getEditProduct = (req, res, next) => {
           });
         }
       })
-      .catch(err => console.log(err));
+      .catch(err => console.error(err));
   }
 };
 
-exports.postEditProject = (req, res, next) => {
+const postEditProject = (req, res, next) => {
   const { title, price, imageUrl, description, productId } = req.body;
 
   const product = new Product(title, price, imageUrl, description, productId);
@@ -84,10 +84,10 @@ exports.postEditProject = (req, res, next) => {
       console.log('product updated');
       res.redirect('/admin/products');
     })
-    .catch(err => console.log(err));
+    .catch(err => console.error(err));
 };
 
-exports.postDeleteProduct = (req, res, next) => {
+const postDeleteProduct = (req, res, next) => {
   const { productId } = req.body;
 
   Product.deleteById(productId)
@@ -95,5 +95,17 @@ exports.postDeleteProduct = (req, res, next) => {
       console.log('product deleted');
       res.redirect('/admin/products');
     })
-    .catch(err => console.log(err));
+    .catch(err => console.error(err));
+};
+
+/**
+ * Export
+ */
+export {
+  getAddProduct,
+  postAddProduct,
+  getProducts,
+  getEditProduct,
+  postEditProject,
+  postDeleteProduct,
 };

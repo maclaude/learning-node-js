@@ -2,13 +2,13 @@
  * NPM import
  */
 // MongoDB
-const mongodb = require('mongodb');
+import mongodb from 'mongodb';
 
 /**
  * Local import
  */
 // Database access
-const { getDatabase } = require('../utils/database');
+import { getDatabase } from '../utils/database';
 
 /**
  * Code
@@ -39,7 +39,7 @@ class Product {
 
     return dbOp
       .then(result => console.log(result))
-      .catch(err => console.log(err));
+      .catch(err => console.error(err));
   }
 
   static fetchAll() {
@@ -52,7 +52,7 @@ class Product {
         console.log(products);
         return products;
       })
-      .catch(err => console.log(err));
+      .catch(err => console.error(err));
   }
 
   static findById(productId) {
@@ -65,7 +65,7 @@ class Product {
         console.log(product);
         return product;
       })
-      .catch(err => console.log(err));
+      .catch(err => console.error(err));
   }
 
   static deleteById(productId) {
@@ -74,11 +74,11 @@ class Product {
       .collection('products')
       .deleteOne({ _id: new mongodb.ObjectId(productId) })
       .then(result => console.log('product deleted'))
-      .catch(err => console.log(err));
+      .catch(err => console.error(err));
   }
 }
 
 /**
  * Export
  */
-module.exports = Product;
+export default Product;

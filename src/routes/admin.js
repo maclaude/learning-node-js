@@ -1,15 +1,20 @@
-/* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
 /**
  * NPM import
  */
-const express = require('express');
+import express from 'express';
 
 /**
  * Local import
  */
-// Controllers
-const adminController = require('../controllers/admin');
+// Controllers middleware functions
+import {
+  getAddProduct,
+  postAddProduct,
+  getProducts,
+  getEditProduct,
+  postEditProject,
+  postDeleteProduct,
+} from '../controllers/admin';
 
 /**
  * Code
@@ -19,19 +24,19 @@ const router = express.Router();
 /**
  * Routes
  */
-router.get('/add-product', adminController.getAddProduct);
+router.get('/add-product', getAddProduct);
 
-router.post('/add-product', adminController.postAddProduct);
+router.post('/add-product', postAddProduct);
 
-router.get('/products', adminController.getProducts);
+router.get('/products', getProducts);
 
-router.get('/edit-product/:productId', adminController.getEditProduct);
+router.get('/edit-product/:productId', getEditProduct);
 
-router.post('/edit-product', adminController.postEditProject);
+router.post('/edit-product', postEditProject);
 
-router.post('/delete-product', adminController.postDeleteProduct);
+router.post('/delete-product', postDeleteProduct);
 
 /**
  * Export
  */
-module.exports = router;
+export default router;
