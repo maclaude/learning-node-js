@@ -17,7 +17,7 @@ import mongoose from 'mongoose';
  * Local import
  */
 // Models
-import User from './models/user';
+// import User from './models/user';
 // Controllers middleware functions
 import getNotFound from './controllers/errors';
 // Routes
@@ -48,16 +48,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Access to the public directory path
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Store the user in request
-app.use((req, res, next) => {
-  User.findById('5ccc41a3a6c9ea06c8c15589')
-    .then(user => {
-      const { username, email, _id, cart } = user;
-      req.user = new User(username, email, _id, cart);
-      next();
-    })
-    .catch(err => console.error(err));
-});
+// // Store the user in request
+// app.use((req, res, next) => {
+//   User.findById('5ccc41a3a6c9ea06c8c15589')
+//     .then(user => {
+//       const { username, email, _id, cart } = user;
+//       req.user = new User(username, email, _id, cart);
+//       next();
+//     })
+//     .catch(err => console.error(err));
+// });
 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);

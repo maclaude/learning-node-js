@@ -20,9 +20,7 @@ const getAddProduct = (req, res, next) => {
 const postAddProduct = (req, res, next) => {
   const { title, imageUrl, description, price } = req.body;
 
-  const { _id } = req.user;
-
-  const product = new Product(title, price, imageUrl, description, null, _id);
+  const product = new Product({ title, price, description, imageUrl });
 
   product
     .save()

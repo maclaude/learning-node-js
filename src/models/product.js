@@ -27,6 +27,11 @@ const productSchema = new Schema({
   },
 });
 
+/**
+ * Export
+ */
+export default mongoose.model('Product', productSchema);
+
 // /**
 //  * NPM import
 //  */

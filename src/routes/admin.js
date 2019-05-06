@@ -24,9 +24,9 @@ const router = express.Router();
 /**
  * Routes
  */
-// router.get('/add-product', getAddProduct);
+router.get('/add-product', getAddProduct);
 
-// router.post('/add-product', postAddProduct);
+router.post('/add-product', postAddProduct);
 
 // router.get('/products', getProducts);
 
