@@ -11,6 +11,7 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import session from 'express-session';
 
 /**
  * Local import
@@ -49,6 +50,15 @@ app.use(cookieParser());
 
 // Access to the public directory path
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Configuration of the session setup
+app.use(
+  session({
+    secret: 'my secret',
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
 // Store the user in request
 app.use((req, res, next) => {
