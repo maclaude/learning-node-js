@@ -21,6 +21,7 @@ import getNotFound from './controllers/errors';
 // Routes
 import adminRoutes from './routes/admin';
 import shopRoutes from './routes/shop';
+import authRoutes from './routes/auth';
 
 /**
  * Code
@@ -58,6 +59,7 @@ app.use((req, res, next) => {
 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
+app.use(authRoutes);
 
 // 404 Error Page
 app.use(getNotFound);
