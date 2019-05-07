@@ -12,11 +12,11 @@
 				<h1 class="main-title">Your Orders</h1>
 				<ul>
 					<% orders.forEach(order => { %>
-					<li>
-						<h1># <%= order._id %></h1>
+					<li class="order-card">
+						<h1 class="order-card-title">Order #<%= order._id %></h1>
 						<ul>
 							<% order.products.forEach(product => { %> 
-								<li><%= product.product.title %> (<%= product.quantity %>)</li>
+								<li><%= product.product.title %> (Quantity: <%= product.quantity %>)</li>
 							<% }); %>
 						</ul>
 					</li>
