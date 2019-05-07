@@ -8,6 +8,7 @@ import path from 'path';
  */
 import express from 'express';
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 
@@ -43,6 +44,8 @@ app.set('views', 'src/views');
 // Parser (Parsing the incoming request body)
 // ! This middleware should always be placed first
 app.use(bodyParser.urlencoded({ extended: true }));
+// Cookie parser
+app.use(cookieParser());
 
 // Access to the public directory path
 app.use(express.static(path.join(__dirname, 'public')));
