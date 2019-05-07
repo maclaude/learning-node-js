@@ -4,10 +4,6 @@
  * Code
  */
 const getLogin = (req, res, next) => {
-  // const isLoggedIn = req.cookies.loggedIn;
-
-  console.log(req.session.isLoggedIn);
-
   res.render('auth/login', {
     pageTitle: 'Login',
     path: '/login',

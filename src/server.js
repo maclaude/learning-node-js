@@ -12,6 +12,7 @@ import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import session from 'express-session';
+import connectMongodbSession from 'connect-mongodb-session';
 
 /**
  * Local import
@@ -33,6 +34,20 @@ dotenv.config();
 
 // Init express
 const app = express();
+
+// Database password
+const { DB_PASSWORD } = process.env;
+
+// Database URI
+const DB_URI = `mongodb+srv://maclaude:${DB_PASSWORD}@node-js-qfuuy.mongodb.net/shop?retryWrites=true`;
+
+// MongoDB Session Storage
+const MongodbSession = connectMongodbSession(session);
+
+const store = new MongodbSession({
+  uri: DB_URI,
+  collections: 'sessions',
+});
 
 // Set view engine configuration
 app.set('view engine', 'ejs');
@@ -57,6 +72,7 @@ app.use(
     secret: 'my secret',
     resave: false,
     saveUninitialized: false,
+    store,
   })
 );
 
@@ -80,14 +96,8 @@ app.use(getNotFound);
 /**
  * Database connexion with Mongoose
  */
-// Database password
-const dbPassword = process.env.DB_PASSWORD;
-
 mongoose
-  .connect(
-    `mongodb+srv://maclaude:${dbPassword}@node-js-qfuuy.mongodb.net/shop?retryWrites=true`,
-    { useNewUrlParser: true }
-  )
+  .connect(DB_URI, { useNewUrlParser: true })
   .then(result => {
     console.log('Connected');
 
