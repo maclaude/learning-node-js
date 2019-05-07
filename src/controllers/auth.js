@@ -4,19 +4,19 @@
  * Code
  */
 const getLogin = (req, res, next) => {
-  const isLoggedIn = req.cookies.loggedIn;
+  // const isLoggedIn = req.cookies.loggedIn;
 
-  console.log(isLoggedIn);
+  console.log(req.session.isLoggedIn);
 
   res.render('auth/login', {
     pageTitle: 'Login',
     path: '/login',
-    isAuthenticated: isLoggedIn,
+    isAuthenticated: false,
   });
 };
 
 const postLogin = (req, res, next) => {
-  res.setHeader('Set-Cookie', 'loggedIn=true');
+  req.session.isLoggedIn = true;
   res.redirect('/');
 };
 
