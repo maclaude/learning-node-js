@@ -1,6 +1,11 @@
 // Auth Controller
 
 /**
+ * NPM import
+ */
+import bcrypt from 'bcryptjs';
+
+/**
  * Local import
  */
 // Models
@@ -54,10 +59,14 @@ const postSignup = (req, res, next) => {
       if (user) {
         return res.redirect('signup');
       }
+      // Encrypting password
+      return bcrypt.hash(password, 12);
+    })
+    .then(hashedPassword => {
       const newUser = new User({
         name,
         email,
-        password,
+        password: hashedPassword,
         cart: { items: [] },
       });
       return newUser.save();
