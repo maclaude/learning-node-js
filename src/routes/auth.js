@@ -7,7 +7,13 @@ import express from 'express';
  * Local import
  */
 // Controllers middleware functions
-import { getLogin, postLogin, postLogout } from '../controllers/auth';
+import {
+  getLogin,
+  postLogin,
+  getSignup,
+  postSignup,
+  postLogout,
+} from '../controllers/auth';
 
 /**
  * Code
@@ -20,6 +26,10 @@ const router = express.Router();
 router.get('/login', getLogin);
 
 router.post('/login', postLogin);
+
+router.get('/signup', getSignup);
+
+router.post('/signup', postSignup);
 
 router.post('/logout', postLogout);
 

@@ -38,6 +38,16 @@ const postLogin = (req, res, next) => {
     .catch(err => console.error(err));
 };
 
+const getSignup = (req, res, next) => {
+  res.render('auth/signup', {
+    pageTitle: 'Signup',
+    path: '/signup',
+    isAuthenticated: req.session.isLoggedIn,
+  });
+};
+
+const postSignup = (req, res, next) => {};
+
 const postLogout = (req, res, next) => {
   req.session.destroy(err => {
     console.log(err);
@@ -48,4 +58,4 @@ const postLogout = (req, res, next) => {
 /**
  * Export
  */
-export { getLogin, postLogin, postLogout };
+export { getLogin, postLogin, getSignup, postSignup, postLogout };
