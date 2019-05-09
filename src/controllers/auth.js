@@ -34,7 +34,14 @@ const postLogin = (req, res, next) => {
     .catch(err => console.error(err));
 };
 
+const postLogout = (req, res, next) => {
+  req.session.destroy(err => {
+    console.log(err);
+    res.redirect('/');
+  });
+};
+
 /**
  * Export
  */
-export { getLogin, postLogin };
+export { getLogin, postLogin, postLogout };
