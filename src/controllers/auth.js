@@ -60,19 +60,20 @@ const postSignup = (req, res, next) => {
         return res.redirect('signup');
       }
       // Encrypting password
-      return bcrypt.hash(password, 12);
-    })
-    .then(hashedPassword => {
-      const newUser = new User({
-        name,
-        email,
-        password: hashedPassword,
-        cart: { items: [] },
-      });
-      return newUser.save();
-    })
-    .then(result => {
-      res.redirect('/login');
+      return bcrypt
+        .hash(password, 12)
+        .then(hashedPassword => {
+          const newUser = new User({
+            name,
+            email,
+            password: hashedPassword,
+            cart: { items: [] },
+          });
+          return newUser.save();
+        })
+        .then(result => {
+          res.redirect('/login');
+        });
     })
     .catch(err => console.log(err));
 };
