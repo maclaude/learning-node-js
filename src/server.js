@@ -105,23 +105,7 @@ mongoose
   .connect(DB_URI, { useNewUrlParser: true })
   .then(result => {
     console.log('Connected');
-
-    User.findOne()
-      .then(user => {
-        if (!user) {
-          // Creation of a new user
-          const newUser = new User({
-            name: 'Marc-Antoine',
-            email: 'test@test.com',
-            cart: {
-              items: [],
-            },
-          });
-          newUser.save();
-        }
-        // Start the server
-        app.listen(3000);
-      })
-      .catch(err => console.error(err));
+    // Start the server
+    app.listen(3000);
   })
   .catch(err => console.error(err));

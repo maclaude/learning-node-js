@@ -46,7 +46,27 @@ const getSignup = (req, res, next) => {
   });
 };
 
-const postSignup = (req, res, next) => {};
+const postSignup = (req, res, next) => {
+  const { name, email, password } = req.body;
+
+  User.findOne({ email })
+    .then(user => {
+      if (user) {
+        return res.redirect('signup');
+      }
+      const newUser = new User({
+        name,
+        email,
+        password,
+        cart: { items: [] },
+      });
+      return newUser.save();
+    })
+    .then(result => {
+      res.redirect('/login');
+    })
+    .catch(err => console.log(err));
+};
 
 const postLogout = (req, res, next) => {
   req.session.destroy(err => {
