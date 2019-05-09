@@ -76,16 +76,6 @@ app.use(
   })
 );
 
-// Store the user in request
-app.use((req, res, next) => {
-  User.findById('5cd029b66b5435204cdeb87c')
-    .then(user => {
-      req.user = user;
-      next();
-    })
-    .catch(err => console.error(err));
-});
-
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);

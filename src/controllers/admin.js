@@ -14,7 +14,7 @@ const getAddProduct = (req, res, next) => {
     pageTitle: 'Add Product',
     path: '/admin/add-product',
     editing: false,
-    isAuthenticated: req.isLoggedIn,
+    isAuthenticated: req.session.isLoggedIn,
   });
 };
 
@@ -26,7 +26,7 @@ const postAddProduct = (req, res, next) => {
     price,
     description,
     imageUrl,
-    userId: req.user,
+    userId: req.session.user,
   });
 
   product
@@ -47,7 +47,7 @@ const getProducts = (req, res, next) => {
         items: products,
         pageTitle: 'Admin Products',
         path: '/admin/products',
-        isAuthenticated: req.isLoggedIn,
+        isAuthenticated: req.session.isLoggedIn,
       });
     })
     .catch(err => console.error(err));
@@ -70,7 +70,7 @@ const getEditProduct = (req, res, next) => {
           res.render('admin/edit-product', {
             pageTitle: 'Edit Product',
             path: '/admin/edit-product',
-            isAuthenticated: req.isLoggedIn,
+            isAuthenticated: req.session.isLoggedIn,
             editing: editMode,
             item: product,
           });

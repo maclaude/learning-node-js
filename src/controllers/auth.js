@@ -1,19 +1,37 @@
 // Auth Controller
 
 /**
+ * Local import
+ */
+// Models
+import User from '../models/user';
+
+/**
  * Code
  */
 const getLogin = (req, res, next) => {
+  // Checking if user is logged in
+  let isLoggedIn = false;
+  if (req.session.user) {
+    isLoggedIn = true;
+  }
+
   res.render('auth/login', {
     pageTitle: 'Login',
     path: '/login',
-    isAuthenticated: false,
+    isAuthenticated: isLoggedIn,
   });
 };
 
 const postLogin = (req, res, next) => {
-  req.session.isLoggedIn = true;
-  res.redirect('/');
+  // Storing user in session
+  User.findById('5cd029b66b5435204cdeb87c')
+    .then(user => {
+      req.session.user = user;
+      req.session.isLoggedIn = true;
+      res.redirect('/');
+    })
+    .catch(err => console.error(err));
 };
 
 /**
