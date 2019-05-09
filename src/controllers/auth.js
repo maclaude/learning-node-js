@@ -12,7 +12,7 @@ import User from '../models/user';
 const getLogin = (req, res, next) => {
   // Checking if user is logged in
   let isLoggedIn = false;
-  if (req.session.user) {
+  if (req.user) {
     isLoggedIn = true;
   }
 
@@ -29,7 +29,11 @@ const postLogin = (req, res, next) => {
     .then(user => {
       req.session.user = user;
       req.session.isLoggedIn = true;
-      res.redirect('/');
+      // Saving the session then redirect
+      req.session.save(err => {
+        console.log(err);
+        res.redirect('/');
+      });
     })
     .catch(err => console.error(err));
 };
