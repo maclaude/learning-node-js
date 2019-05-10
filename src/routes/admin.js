@@ -15,6 +15,8 @@ import {
   postEditProject,
   postDeleteProduct,
 } from '../controllers/admin';
+// Checking authentication middleware
+import isAuth from '../middlewares/is-auth';
 
 /**
  * Code
@@ -24,17 +26,17 @@ const router = express.Router();
 /**
  * Routes
  */
-router.get('/add-product', getAddProduct);
+router.get('/add-product', isAuth, getAddProduct);
 
-router.post('/add-product', postAddProduct);
+router.post('/add-product', isAuth, postAddProduct);
 
-router.get('/products', getProducts);
+router.get('/products', isAuth, getProducts);
 
-router.get('/edit-product/:productId', getEditProduct);
+router.get('/edit-product/:productId', isAuth, getEditProduct);
 
-router.post('/edit-product', postEditProject);
+router.post('/edit-product', isAuth, postEditProject);
 
-router.post('/delete-product', postDeleteProduct);
+router.post('/delete-product', isAuth, postDeleteProduct);
 
 /**
  * Export
