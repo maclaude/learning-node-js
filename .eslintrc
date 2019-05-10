@@ -20,6 +20,19 @@
       {
         "allowAfterThis": true
       }
+    ],
+    "no-unused-expressions": [
+      "error",
+      {
+        "allowTernary": true
+      }
+    ],
+    "prefer-destructuring": [
+      "error",
+      {
+        "object": true,
+        "array": false
+      }
     ]
   }
 }

@@ -21,5 +21,8 @@
 			
 			<button class="main-form__button" type="submit">Connexion</button>
 		</form>
+		<% if (errorMessage) { %>
+			<div class="user-message user-message--error"><%= errorMessage %></div>
+		<% } %>
 	</main>
 <%- include('../includes/footer.ejs') %>

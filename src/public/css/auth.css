@@ -1,7 +1,7 @@
 .login-form,
 .signup-form {
   width: 30%;
-  margin: 2em auto;
+  margin: 1em auto .5em;
   padding: 1em 2em;
   display: flex;
   flex-wrap: wrap;

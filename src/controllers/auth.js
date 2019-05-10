@@ -15,9 +15,13 @@ import User from '../models/user';
  * Code
  */
 const getLogin = (req, res, next) => {
+  let message = req.flash('error');
+  message.length > 0 ? (message = message[0]) : (message = null);
+
   res.render('auth/login', {
     pageTitle: 'Login',
     path: '/login',
+    errorMessage: message,
   });
 };
 
@@ -28,6 +32,7 @@ const postLogin = (req, res, next) => {
     .then(user => {
       if (!user) {
         // If there is no user, redirect to login
+        req.flash('error', 'Invalid email or password');
         res.redirect('/login');
       } else {
         bcrypt

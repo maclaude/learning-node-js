@@ -14,6 +14,7 @@ import mongoose from 'mongoose';
 import session from 'express-session';
 import connectMongodbSession from 'connect-mongodb-session';
 import csrf from 'csurf';
+import flash from 'connect-flash';
 
 /**
  * Local import
@@ -80,6 +81,9 @@ app.use(
     store,
   })
 );
+
+// Initialize flash messages
+app.use(flash());
 
 // Initialize CSRF protection
 app.use(csrfProtection);
