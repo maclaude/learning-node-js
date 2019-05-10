@@ -1,6 +1,11 @@
 // Auth Controller
 
 /**
+ * Node Core Modules import
+ */
+import crypto from 'crypto';
+
+/**
  * NPM import
  */
 import dotenv from 'dotenv';
@@ -135,6 +140,51 @@ const getResetPassword = (req, res, next) => {
   });
 };
 
+const postResetPassword = (req, res, next) => {
+  // Generating random bytes (token)
+  crypto.randomBytes(32, (err, buffer) => {
+    if (err) {
+      console.error(err);
+      return res.redirect('/reset');
+    }
+    const token = buffer.toString('hex');
+
+    const { email } = req.body;
+
+    // Finding the user with the email
+    return User.findOne({ email })
+      .then(user => {
+        // Redirecting if no email founded in the user collection
+        if (!user) {
+          req.flash('err', 'No account with that email found');
+          return res.redirect('/reset-password');
+        }
+        const currentUser = user;
+        // Setting the user reset token
+        currentUser.resetToken = token;
+        // Setting the user token expiration time of 1hour
+        currentUser.resetTokenExpiration = Date.now() + 3600000;
+        // Saving user update
+        return currentUser.save();
+      })
+      .then(result => {
+        // Redirecting to homepage
+        res.redirect('/');
+        // Sending email to the user with the reset-password link
+        transporter.sendMail({
+          to: email,
+          from: 'shop@learning-node-js.com',
+          subject: 'Reset you password',
+          html: `
+            <p>You requested a password reset</p>
+            <p>Click this <a href="http://localhost:3000/reset-password/${token}">link</a> to set a new password.</p>
+          `,
+        });
+      })
+      .catch(err => console.log(err));
+  });
+};
+
 const postLogout = (req, res, next) => {
   req.session.destroy(err => {
     console.log(err);
@@ -151,5 +201,6 @@ export {
   getSignup,
   postSignup,
   getResetPassword,
+  postResetPassword,
   postLogout,
 };

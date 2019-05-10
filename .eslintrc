@@ -33,6 +33,12 @@
         "object": true,
         "array": false
       }
+    ],
+    "no-shadow": [
+      "error",
+      {
+        "allow": ["err"]
+      }
     ]
   }
 }
