@@ -124,6 +124,17 @@ const postSignup = (req, res, next) => {
     .catch(err => console.error(err));
 };
 
+const getResetPassword = (req, res, next) => {
+  let message = req.flash('error');
+  message.length > 0 ? (message = message[0]) : (message = null);
+
+  res.render('auth/reset-password', {
+    pageTitle: 'Reset Password',
+    path: '/reset-password',
+    errorMessage: message,
+  });
+};
+
 const postLogout = (req, res, next) => {
   req.session.destroy(err => {
     console.log(err);
@@ -134,4 +145,11 @@ const postLogout = (req, res, next) => {
 /**
  * Export
  */
-export { getLogin, postLogin, getSignup, postSignup, postLogout };
+export {
+  getLogin,
+  postLogin,
+  getSignup,
+  postSignup,
+  getResetPassword,
+  postLogout,
+};
