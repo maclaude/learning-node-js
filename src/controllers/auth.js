@@ -3,7 +3,10 @@
 /**
  * NPM import
  */
+import dotenv from 'dotenv';
 import bcrypt from 'bcryptjs';
+import nodemailer from 'nodemailer';
+import sendgridTransport from 'nodemailer-sendgrid-transport';
 
 /**
  * Local import
@@ -14,6 +17,19 @@ import User from '../models/user';
 /**
  * Code
  */
+// Environment variables
+dotenv.config();
+
+// Intialize transporter
+const transporter = nodemailer.createTransport(
+  sendgridTransport({
+    auth: {
+      api_key: process.env.SENDGRID_API_KEY,
+    },
+  })
+);
+
+// Middleware functions
 const getLogin = (req, res, next) => {
   let message = req.flash('error');
   message.length > 0 ? (message = message[0]) : (message = null);
@@ -95,9 +111,17 @@ const postSignup = (req, res, next) => {
         })
         .then(result => {
           res.redirect('/login');
-        });
+          // Sending email
+          return transporter.sendMail({
+            to: email,
+            from: 'shop@learning-node-js.com',
+            subject: 'Signup succeded',
+            html: `<h1>You are successfully signed up ${name}!</h1>`,
+          });
+        })
+        .catch(err => console.error(err));
     })
-    .catch(err => console.log(err));
+    .catch(err => console.error(err));
 };
 
 const postLogout = (req, res, next) => {
