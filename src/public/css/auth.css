@@ -1,5 +1,6 @@
 .login-form,
-.signup-form {
+.signup-form,
+.reset-form {
   width: 30%;
   margin: 1em auto .5em;
   padding: 1em 2em;

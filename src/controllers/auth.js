@@ -156,7 +156,7 @@ const postResetPassword = (req, res, next) => {
       .then(user => {
         // Redirecting if no email founded in the user collection
         if (!user) {
-          req.flash('err', 'No account with that email found');
+          req.flash('error', 'No account with that email found');
           return res.redirect('/reset-password');
         }
         const currentUser = user;
@@ -185,6 +185,30 @@ const postResetPassword = (req, res, next) => {
   });
 };
 
+const getNewPassword = (req, res, next) => {
+  const { token } = req.params;
+  // Finding the user token & checking the token validity (expiration date)
+  User.findOne({
+    resetToken: token,
+    resetTokenExpiration: { $gt: Date.now() },
+  })
+    .then(user => {
+      let message = req.flash('error');
+      message.length > 0 ? (message = message[0]) : (message = null);
+
+      const { _id } = user;
+
+      // Rendering the view with the userId
+      res.render('auth/new-password', {
+        pageTitle: 'Update Password',
+        path: '/new-password',
+        errorMessage: message,
+        userId: _id.toString(),
+      });
+    })
+    .catch(err => console.error(err));
+};
+
 const postLogout = (req, res, next) => {
   req.session.destroy(err => {
     console.log(err);
@@ -202,5 +226,6 @@ export {
   postSignup,
   getResetPassword,
   postResetPassword,
+  getNewPassword,
   postLogout,
 };
