@@ -25,7 +25,7 @@
 				<label class="main-form__label" for="confirmPassword">Confirm Password</label>
 				<input class="main-form__input" type="password" name="confirmPassword">
 			</div>
-			
+			<input type="hidden" name="_csrf" value="<%= csrfToken %>">
 			<button class="main-form__button" type="submit">Signup</button>
 		</form>
 	</main>

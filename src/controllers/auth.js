@@ -15,16 +15,9 @@ import User from '../models/user';
  * Code
  */
 const getLogin = (req, res, next) => {
-  // Checking if user is logged in
-  let isLoggedIn = false;
-  if (req.user) {
-    isLoggedIn = true;
-  }
-
   res.render('auth/login', {
     pageTitle: 'Login',
     path: '/login',
-    isAuthenticated: isLoggedIn,
   });
 };
 
@@ -66,7 +59,6 @@ const getSignup = (req, res, next) => {
   res.render('auth/signup', {
     pageTitle: 'Signup',
     path: '/signup',
-    isAuthenticated: req.session.isLoggedIn,
   });
 };
 

@@ -13,6 +13,7 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import session from 'express-session';
 import connectMongodbSession from 'connect-mongodb-session';
+import csrf from 'csurf';
 
 /**
  * Local import
@@ -49,8 +50,12 @@ const store = new MongodbSession({
   collections: 'sessions',
 });
 
+// CSRF protection
+const csrfProtection = csrf();
+
 // Set view engine configuration
 app.set('view engine', 'ejs');
+
 // Set views directory path
 app.set('views', 'src/views');
 
@@ -76,6 +81,10 @@ app.use(
   })
 );
 
+// Initialize CSRF protection
+app.use(csrfProtection);
+
+// Initialize user
 app.use((req, res, next) => {
   if (!req.session.user) {
     next();
@@ -91,6 +100,14 @@ app.use((req, res, next) => {
   }
 });
 
+// Locals variables available in the rendered views
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.session.isLoggedIn;
+  res.locals.csrfToken = req.csrfToken();
+  next();
+});
+
+// Routes
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);

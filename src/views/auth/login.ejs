@@ -17,7 +17,8 @@
 				<label class="main-form__label" for="imageUrl">Password</label>
 				<input class="main-form__input" type="password" name="password">
 			</div>
-
+			<input type="hidden" name="_csrf" value="<%= csrfToken %>">
+			
 			<button class="main-form__button" type="submit">Connexion</button>
 		</form>
 	</main>
