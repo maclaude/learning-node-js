@@ -29,16 +29,35 @@ const getLogin = (req, res, next) => {
 };
 
 const postLogin = (req, res, next) => {
-  // Storing user in session
-  User.findById('5cd029b66b5435204cdeb87c')
+  const { email, password } = req.body;
+  // Finding user by email
+  User.findOne({ email })
     .then(user => {
-      req.session.user = user;
-      req.session.isLoggedIn = true;
-      // Saving the session then redirect
-      req.session.save(err => {
-        console.log(err);
-        res.redirect('/');
-      });
+      if (!user) {
+        // If there is no user, redirect to login
+        res.redirect('/login');
+      } else {
+        bcrypt
+          // Comparing passwords
+          .compare(password, user.password)
+          .then(passwordsdMatch => {
+            // If passwords matched, storing user in session
+            if (passwordsdMatch) {
+              req.session.user = user;
+              req.session.isLoggedIn = true;
+              // Saving the session, then redirect to the homepage
+              return req.session.save(err => {
+                console.error(err);
+                res.redirect('/');
+              });
+            }
+            return res.redirect('/login');
+          })
+          .catch(err => {
+            console.error(err);
+            res.redirect('/login');
+          });
+      }
     })
     .catch(err => console.error(err));
 };
