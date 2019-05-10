@@ -49,6 +49,7 @@ const postLogin = (req, res, next) => {
                 res.redirect('/');
               });
             }
+            req.flash('error', 'Invalid email or password');
             return res.redirect('/login');
           })
           .catch(err => {
@@ -61,9 +62,13 @@ const postLogin = (req, res, next) => {
 };
 
 const getSignup = (req, res, next) => {
+  let message = req.flash('error');
+  message.length > 0 ? (message = message[0]) : (message = null);
+
   res.render('auth/signup', {
     pageTitle: 'Signup',
     path: '/signup',
+    errorMessage: message,
   });
 };
 
@@ -73,6 +78,7 @@ const postSignup = (req, res, next) => {
   User.findOne({ email })
     .then(user => {
       if (user) {
+        req.flash('error', 'Email address already exists');
         return res.redirect('signup');
       }
       // Encrypting password

@@ -28,5 +28,8 @@
 			<input type="hidden" name="_csrf" value="<%= csrfToken %>">
 			<button class="main-form__button" type="submit">Signup</button>
 		</form>
+		<% if (errorMessage) { %>
+			<div class="user-message user-message--error"><%= errorMessage %></div>
+		<% } %>
 	</main>
 <%- include('../includes/footer.ejs') %>
