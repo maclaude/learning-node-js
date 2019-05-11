@@ -18,6 +18,8 @@ import sendgridTransport from 'nodemailer-sendgrid-transport';
  */
 // Models
 import User from '../models/user';
+// Utils
+import checkForErrors from '../utils/check-for-errors';
 
 /**
  * Code
@@ -36,13 +38,10 @@ const transporter = nodemailer.createTransport(
 
 // Middleware functions
 const getLogin = (req, res, next) => {
-  let message = req.flash('error');
-  message.length > 0 ? (message = message[0]) : (message = null);
-
   res.render('auth/login', {
     pageTitle: 'Login',
     path: '/login',
-    errorMessage: message,
+    errorMessage: checkForErrors(req),
   });
 };
 
@@ -83,13 +82,10 @@ const postLogin = (req, res, next) => {
 };
 
 const getSignup = (req, res, next) => {
-  let message = req.flash('error');
-  message.length > 0 ? (message = message[0]) : (message = null);
-
   res.render('auth/signup', {
     pageTitle: 'Signup',
     path: '/signup',
-    errorMessage: message,
+    errorMessage: checkForErrors(req),
   });
 };
 
@@ -130,13 +126,10 @@ const postSignup = (req, res, next) => {
 };
 
 const getResetPassword = (req, res, next) => {
-  let message = req.flash('error');
-  message.length > 0 ? (message = message[0]) : (message = null);
-
   res.render('auth/reset-password', {
     pageTitle: 'Reset Password',
     path: '/reset-password',
-    errorMessage: message,
+    errorMessage: checkForErrors(req),
   });
 };
 
@@ -193,16 +186,13 @@ const getNewPassword = (req, res, next) => {
     resetTokenExpiration: { $gt: Date.now() },
   })
     .then(user => {
-      let message = req.flash('error');
-      message.length > 0 ? (message = message[0]) : (message = null);
-
       const { _id } = user;
 
       // Rendering the view with the userId in order to post new password
       res.render('auth/new-password', {
         pageTitle: 'Update Password',
         path: '/new-password',
-        errorMessage: message,
+        errorMessage: checkForErrors(req),
         userId: _id.toString(),
         passwordToken: token,
       });
