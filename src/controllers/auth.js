@@ -103,7 +103,7 @@ const postSignup = (req, res, next) => {
     });
   }
 
-  User.findOne({ email })
+  return User.findOne({ email })
     .then(user => {
       if (user) {
         req.flash('error', 'Email address already exists');

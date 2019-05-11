@@ -2,7 +2,6 @@
  * NPM import
  */
 import express from 'express';
-import { check } from 'express-validator/check';
 
 /**
  * Local import
@@ -19,6 +18,8 @@ import {
   postNewPassword,
   postLogout,
 } from '../controllers/auth';
+// Utils
+import signupValidation from '../utils/signup-validation';
 
 /**
  * Code
@@ -34,21 +35,7 @@ router.post('/login', postLogin);
 
 router.get('/signup', getSignup);
 
-router.post(
-  '/signup',
-  check('email')
-    .isEmail()
-    .withMessage('Please enter a valid email')
-    // eslint-disable-next-line no-unused-vars
-    .custom((value, { req }) => {
-      if (value === 'test@test.com') {
-        throw new Error('This email address is forbidden !');
-      }
-      // Important to return true after the condition
-      return true;
-    }),
-  postSignup
-);
+router.post('/signup', signupValidation, postSignup);
 
 router.get('/reset-password', getResetPassword);
 
