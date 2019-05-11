@@ -12,7 +12,7 @@ import {
   postAddProduct,
   getProducts,
   getEditProduct,
-  postEditProject,
+  postEditProduct,
   postDeleteProduct,
 } from '../controllers/admin';
 // Checking authentication middleware
@@ -34,7 +34,7 @@ router.get('/products', isAuth, getProducts);
 
 router.get('/edit-product/:productId', isAuth, getEditProduct);
 
-router.post('/edit-product', isAuth, postEditProject);
+router.post('/edit-product', isAuth, postEditProduct);
 
 router.post('/delete-product', isAuth, postDeleteProduct);
 

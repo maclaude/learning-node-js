@@ -40,7 +40,9 @@ const postAddProduct = (req, res, next) => {
 };
 
 const getProducts = (req, res, next) => {
-  Product.find()
+  const { _id: currentUserId } = req.user;
+  // Filtering products of the current logged in user
+  Product.find({ userId: currentUserId })
     .then(products => {
       res.render('admin/product-list', {
         items: products,
@@ -77,30 +79,38 @@ const getEditProduct = (req, res, next) => {
   }
 };
 
-const postEditProject = (req, res, next) => {
+const postEditProduct = (req, res, next) => {
   const { title, price, description, imageUrl, productId } = req.body;
+  const { _id: currentUserId } = req.user;
 
   Product.findById(productId)
     .then(product => {
+      if (product.userId.toString() !== currentUserId.toString()) {
+        return res.redirect('/');
+      }
+
       const updatedProduct = product;
       updatedProduct.title = title;
       updatedProduct.price = price;
       updatedProduct.description = description;
       updatedProduct.imageUrl = imageUrl;
 
-      return updatedProduct.save();
-    })
-    .then(result => {
-      console.log('product updated');
-      res.redirect('/admin/products');
+      return updatedProduct
+        .save()
+        .then(result => {
+          console.log('product updated');
+          res.redirect('/admin/products');
+        })
+        .catch(err => console.error(err));
     })
     .catch(err => console.error(err));
 };
 
 const postDeleteProduct = (req, res, next) => {
   const { productId } = req.body;
+  const { _id: currentUserId } = req.user;
 
-  Product.findByIdAndRemove(productId)
+  Product.deleteOne({ _id: productId, userId: currentUserId })
     .then(result => {
       console.log('product deleted');
       res.redirect('/admin/products');
@@ -116,6 +126,6 @@ export {
   postAddProduct,
   getProducts,
   getEditProduct,
-  postEditProject,
+  postEditProduct,
   postDeleteProduct,
 };
