@@ -187,7 +187,7 @@ const postResetPassword = (req, res, next) => {
 
 const getNewPassword = (req, res, next) => {
   const { token } = req.params;
-  // Finding the user token & checking the token validity (expiration date)
+  // Finding the user by token & checking the token validity (expiration date)
   User.findOne({
     resetToken: token,
     resetTokenExpiration: { $gt: Date.now() },
@@ -198,14 +198,41 @@ const getNewPassword = (req, res, next) => {
 
       const { _id } = user;
 
-      // Rendering the view with the userId
+      // Rendering the view with the userId in order to post new password
       res.render('auth/new-password', {
         pageTitle: 'Update Password',
         path: '/new-password',
         errorMessage: message,
         userId: _id.toString(),
+        passwordToken: token,
       });
     })
+    .catch(err => console.error(err));
+};
+
+const postNewPassword = (req, res, next) => {
+  const { newPassword, userId, passwordToken } = req.body;
+  let resetUser;
+  // Finding the user by id & token and checking the token validity (expiration date)
+  User.findOne({
+    resetToken: passwordToken,
+    resetTokenExpiration: { $gt: Date.now() },
+    _id: userId,
+  })
+    .then(user => {
+      resetUser = user;
+      // Encrypting password
+      return bcrypt.hash(newPassword, 12);
+    })
+    .then(hashedPassword => {
+      // Setting user new password
+      resetUser.password = hashedPassword;
+      resetUser.resetToken = undefined;
+      resetUser.resetTokenExpiration = undefined;
+      // Saving updated user
+      return resetUser.save();
+    })
+    .then(result => res.redirect('/login'))
     .catch(err => console.error(err));
 };
 
@@ -227,5 +254,6 @@ export {
   getResetPassword,
   postResetPassword,
   getNewPassword,
+  postNewPassword,
   postLogout,
 };
