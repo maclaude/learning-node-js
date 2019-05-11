@@ -22,6 +22,12 @@ const signupValidation = [
     'password',
     'Please enter a password with at least 8 characters'
   ).isLength({ min: 8 }),
+  body('confirmPassword').custom((value, { req }) => {
+    if (value !== req.body.password) {
+      throw new Error('Passwords are not the same');
+    }
+    return true;
+  }),
 ];
 
 // Export
