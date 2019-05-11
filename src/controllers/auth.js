@@ -12,6 +12,7 @@ import dotenv from 'dotenv';
 import bcrypt from 'bcryptjs';
 import nodemailer from 'nodemailer';
 import sendgridTransport from 'nodemailer-sendgrid-transport';
+import { validationResult } from 'express-validator/check';
 
 /**
  * Local import
@@ -91,6 +92,16 @@ const getSignup = (req, res, next) => {
 
 const postSignup = (req, res, next) => {
   const { name, email, password } = req.body;
+
+  const errors = validationResult(req);
+  // If there is errors, set status code du 422 and re-render the page
+  if (!errors.isEmpty()) {
+    return res.status(422).render('auth/signup', {
+      pageTitle: 'Signup',
+      path: '/signup',
+      errorMessage: errors.array()[0].msg,
+    });
+  }
 
   User.findOne({ email })
     .then(user => {

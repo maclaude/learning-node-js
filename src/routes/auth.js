@@ -2,6 +2,7 @@
  * NPM import
  */
 import express from 'express';
+import { check } from 'express-validator/check';
 
 /**
  * Local import
@@ -33,7 +34,13 @@ router.post('/login', postLogin);
 
 router.get('/signup', getSignup);
 
-router.post('/signup', postSignup);
+router.post(
+  '/signup',
+  check('email')
+    .isEmail()
+    .withMessage('Please enter a valid email'),
+  postSignup
+);
 
 router.get('/reset-password', getResetPassword);
 
