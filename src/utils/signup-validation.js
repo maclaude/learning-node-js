@@ -2,7 +2,7 @@
 /**
  * NPM import
  */
-import { check } from 'express-validator/check';
+import { check, body } from 'express-validator/check';
 
 /**
  * Code
@@ -18,6 +18,10 @@ const signupValidation = [
       // Important to return true after the condition
       return true;
     }),
+  body(
+    'password',
+    'Please enter a password with at least 8 characters'
+  ).isLength({ min: 8 }),
 ];
 
 // Export
