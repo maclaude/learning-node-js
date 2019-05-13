@@ -1,6 +1,11 @@
 // Admin Controller
 
 /**
+ * NPM import
+ */
+import { validationResult } from 'express-validator/check';
+
+/**
  * Local import
  */
 // Models
@@ -14,11 +19,27 @@ const getAddProduct = (req, res, next) => {
     pageTitle: 'Add Product',
     path: '/admin/add-product',
     editing: false,
+    hasError: false,
+    errorMessage: null,
   });
 };
 
 const postAddProduct = (req, res, next) => {
   const { title, imageUrl, description, price } = req.body;
+
+  const errors = validationResult(req);
+  console.log(errors.array());
+  // If there is errors, set status code 422 and re-render the page
+  if (!errors.isEmpty()) {
+    return res.status(422).render('admin/edit-product', {
+      pageTitle: 'Add Product',
+      path: '/admin/add-product',
+      editing: false,
+      hasError: true,
+      errorMessage: errors.array()[0].msg,
+      item: { title, imageUrl, description, price },
+    });
+  }
 
   const product = new Product({
     title,
@@ -28,7 +49,7 @@ const postAddProduct = (req, res, next) => {
     userId: req.user,
   });
 
-  product
+  return product
     .save()
     .then(result => {
       console.log('Product created');
@@ -71,6 +92,8 @@ const getEditProduct = (req, res, next) => {
             pageTitle: 'Edit Product',
             path: '/admin/edit-product',
             editing: editMode,
+            hasError: false,
+            errorMessage: null,
             item: product,
           });
         }

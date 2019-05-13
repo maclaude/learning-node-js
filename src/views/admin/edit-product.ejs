@@ -10,19 +10,19 @@
 
 			<div class="main-form-control">
 				<label class="main-form__label" for="title">Title</label>
-				<input class="main-form__input" type="text" name="title" value="<% if (editing) { %><%= item.title %><% } %>">
+				<input class="main-form__input" type="text" name="title" value="<% if (editing || hasError) { %><%= item.title %><% } %>">
 			</div>
 			<div class="main-form-control">
 				<label class="main-form__label" for="imageUrl">Image URL</label>
-				<input class="main-form__input" type="text" name="imageUrl" value="<% if (editing) { %><%= item.imageUrl %><% } %>">
+				<input class="main-form__input" type="text" name="imageUrl" value="<% if (editing || hasError) { %><%= item.imageUrl %><% } %>">
 			</div>
 			<div class="main-form-control">
 				<label class="main-form__label" for="description">Description</label>
-				<textarea class="main-form__input" type="text" name="description" rows="5"><% if (editing) { %><%= item.description %><% } %></textarea>
+				<textarea class="main-form__input" type="text" name="description" rows="5"><% if (editing || hasError) { %><%= item.description %><% } %></textarea>
 			</div>
 			<div class="main-form-control">
 				<label class="main-form__label" for="price">Price</label>
-				<input class="main-form__input" type="number" name="price" step="0.01" value="<% if (editing) { %><%= item.price %><% } %>">
+				<input class="main-form__input" type="number" name="price" step="0.01" value="<% if (editing || hasError) { %><%= item.price %><% } %>">
 			</div>
 			<% if (editing) { %>
 				<input type="hidden" value="<%= item._id %>" name="productId">
@@ -31,5 +31,8 @@
 
 			<button class="main-form__button" type="submit"><% if (editing) { %>Update Product<% } else { %>Add Product<% } %></button>
 		</form>
+		<% if (errorMessage) { %>
+			<div class="user-message user-message--error"><%= errorMessage %></div>
+		<% } %>
 	</main>
 <%- include('../includes/footer.ejs') %>
