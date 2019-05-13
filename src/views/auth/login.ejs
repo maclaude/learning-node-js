@@ -22,7 +22,8 @@
 				<input
 					class="main-form__input <%= validationErrors.find(e => e.param === 'password') ? 'invalid' : '' %>" 
 					type="password"
-					name="password">
+					name="password"
+				>
 			</div>
 			<a class="main-form-link" href="/reset-password">forgotten password</a>
 			<input type="hidden" name="_csrf" value="<%= csrfToken %>">

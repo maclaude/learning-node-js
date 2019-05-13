@@ -21,6 +21,7 @@ const getAddProduct = (req, res, next) => {
     editing: false,
     hasError: false,
     errorMessage: null,
+    validationErrors: [],
   });
 };
 
@@ -28,7 +29,6 @@ const postAddProduct = (req, res, next) => {
   const { title, imageUrl, description, price } = req.body;
 
   const errors = validationResult(req);
-  console.log(errors.array());
   // If there is errors, set status code 422 and re-render the page
   if (!errors.isEmpty()) {
     return res.status(422).render('admin/edit-product', {
@@ -38,6 +38,7 @@ const postAddProduct = (req, res, next) => {
       hasError: true,
       errorMessage: errors.array()[0].msg,
       item: { title, imageUrl, description, price },
+      validationErrors: errors.array(),
     });
   }
 
@@ -95,6 +96,7 @@ const getEditProduct = (req, res, next) => {
             hasError: false,
             errorMessage: null,
             item: product,
+            validationErrors: [],
           });
         }
       })
@@ -106,7 +108,20 @@ const postEditProduct = (req, res, next) => {
   const { title, price, description, imageUrl, productId } = req.body;
   const { _id: currentUserId } = req.user;
 
-  Product.findById(productId)
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).render('admin/edit-product', {
+      pageTitle: 'Edit Product',
+      path: '/admin/edit-product',
+      editing: true,
+      hasError: true,
+      errorMessage: errors.array()[0].msg,
+      item: { title, imageUrl, description, price, _id: productId },
+      validationErrors: errors.array(),
+    });
+  }
+
+  return Product.findById(productId)
     .then(product => {
       if (product.userId.toString() !== currentUserId.toString()) {
         return res.redirect('/');

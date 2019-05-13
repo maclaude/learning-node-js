@@ -19,7 +19,8 @@
 					class="main-form__input <%= validationErrors.find(e => e.param === 'email') ? 'invalid' : '' %>" 
 					type="text"
 					name="email"
-					value="<%= oldInputs.email %>">
+					value="<%= oldInputs.email %>"
+				>
 			</div>
 			<div class="main-form-control">
 				<label class="main-form__label" for="password">Password</label>
@@ -27,7 +28,8 @@
 					class="main-form__input <%= validationErrors.find(e => e.param === 'password') ? 'invalid' : '' %>" 
 					type="password"
 					name="password" 
-					value="<%= oldInputs.password %>">
+					value="<%= oldInputs.password %>"
+				>
 			</div>
 			<div class="main-form-control">
 				<label class="main-form__label" for="confirmPassword">Confirm Password</label>
@@ -35,7 +37,8 @@
 					class="main-form__input <%= validationErrors.find(e => e.param === 'confirmPassword') ? 'invalid' : '' %>" 
 					type="password"
 					name="confirmPassword"
-					value="<%= oldInputs.confirmPassword %>">
+					value="<%= oldInputs.confirmPassword %>"
+				>
 			</div>
 			<input type="hidden" name="_csrf" value="<%= csrfToken %>">
 			<button class="main-form__button" type="submit">Signup</button>
