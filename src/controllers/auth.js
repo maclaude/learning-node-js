@@ -98,11 +98,12 @@ const getSignup = (req, res, next) => {
     pageTitle: 'Signup',
     path: '/signup',
     errorMessage: checkForErrors(req),
+    oldInputs: { name: '', email: '', password: '', confirmPassword: '' },
   });
 };
 
 const postSignup = (req, res, next) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, confirmPassword } = req.body;
 
   const errors = validationResult(req);
   // If there is errors, set status code 422 and re-render the page
@@ -111,6 +112,7 @@ const postSignup = (req, res, next) => {
       pageTitle: 'Signup',
       path: '/signup',
       errorMessage: errors.array()[0].msg,
+      oldInputs: { name, email, password, confirmPassword },
     });
   }
 

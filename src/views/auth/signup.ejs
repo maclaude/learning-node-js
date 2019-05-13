@@ -11,19 +11,19 @@
 
 			<div class="main-form-control">
 				<label class="main-form__label" for="name">Name</label>
-				<input class="main-form__input" type="text" name="name">
+				<input class="main-form__input" type="text" name="name" value="<%= oldInputs.name %>">
 			</div>
 			<div class="main-form-control">
 				<label class="main-form__label" for="title">Email</label>
-				<input class="main-form__input" type="text" name="email">
+				<input class="main-form__input" type="text" name="email" value="<%= oldInputs.email %>">
 			</div>
 			<div class="main-form-control">
 				<label class="main-form__label" for="password">Password</label>
-				<input class="main-form__input" type="password" name="password">
+				<input class="main-form__input" type="password" name="password" value="<%= oldInputs.password %>">
 			</div>
 			<div class="main-form-control">
 				<label class="main-form__label" for="confirmPassword">Confirm Password</label>
-				<input class="main-form__input" type="password" name="confirmPassword">
+				<input class="main-form__input" type="password" name="confirmPassword" value="<%= oldInputs.confirmPassword %>">
 			</div>
 			<input type="hidden" name="_csrf" value="<%= csrfToken %>">
 			<button class="main-form__button" type="submit">Signup</button>
