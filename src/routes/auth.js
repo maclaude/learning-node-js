@@ -19,7 +19,7 @@ import {
   postLogout,
 } from '../controllers/auth';
 // Utils
-import signupValidation from '../utils/signup-validation';
+import { signupValidation, loginValidation } from '../utils/auth-validation';
 
 /**
  * Code
@@ -31,7 +31,7 @@ const router = express.Router();
  */
 router.get('/login', getLogin);
 
-router.post('/login', postLogin);
+router.post('/login', loginValidation, postLogin);
 
 router.get('/signup', getSignup);
 

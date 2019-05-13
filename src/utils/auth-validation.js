@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable prefer-promise-reject-errors */
 /**
  * NPM import
  */
@@ -18,7 +20,6 @@ const signupValidation = [
     .custom((value, { req }) => {
       return User.findOne({ email: value }).then(user => {
         if (user) {
-          // eslint-disable-next-line prefer-promise-reject-errors
           return Promise.reject(
             'E-mail exists already, please choose a different one '
           );
@@ -38,5 +39,17 @@ const signupValidation = [
   }),
 ];
 
-// Export
-export default signupValidation;
+const loginValidation = [
+  check('email')
+    .isEmail()
+    .withMessage('Please enter a valid email'),
+  body(
+    'password',
+    'Please enter a password with at least 8 characters'
+  ).isLength({ min: 8 }),
+];
+
+/**
+ * Export
+ */
+export { signupValidation, loginValidation };

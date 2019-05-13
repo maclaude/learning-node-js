@@ -48,8 +48,19 @@ const getLogin = (req, res, next) => {
 
 const postLogin = (req, res, next) => {
   const { email, password } = req.body;
+
+  const errors = validationResult(req);
+  // If there is errors, set status code 422 and re-render the page
+  if (!errors.isEmpty()) {
+    return res.status(422).render('auth/login', {
+      pageTitle: 'Login',
+      path: '/login',
+      errorMessage: errors.array()[0].msg,
+    });
+  }
+
   // Finding user by email
-  User.findOne({ email })
+  return User.findOne({ email })
     .then(user => {
       if (!user) {
         // If there is no user, redirect to login
@@ -94,7 +105,7 @@ const postSignup = (req, res, next) => {
   const { name, email, password } = req.body;
 
   const errors = validationResult(req);
-  // If there is errors, set status code du 422 and re-render the page
+  // If there is errors, set status code 422 and re-render the page
   if (!errors.isEmpty()) {
     return res.status(422).render('auth/signup', {
       pageTitle: 'Signup',
