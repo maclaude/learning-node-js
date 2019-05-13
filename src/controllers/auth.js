@@ -28,7 +28,7 @@ import checkForErrors from '../utils/check-for-errors';
 // Environment variables
 dotenv.config();
 
-// Intialize transporter
+// Intialize send-grid transporter
 const transporter = nodemailer.createTransport(
   sendgridTransport({
     auth: {
@@ -103,35 +103,27 @@ const postSignup = (req, res, next) => {
     });
   }
 
-  return User.findOne({ email })
-    .then(user => {
-      if (user) {
-        req.flash('error', 'Email address already exists');
-        return res.redirect('signup');
-      }
-      // Encrypting password
-      return bcrypt
-        .hash(password, 12)
-        .then(hashedPassword => {
-          const newUser = new User({
-            name,
-            email,
-            password: hashedPassword,
-            cart: { items: [] },
-          });
-          return newUser.save();
-        })
-        .then(result => {
-          res.redirect('/login');
-          // Sending email
-          return transporter.sendMail({
-            to: email,
-            from: 'shop@learning-node-js.com',
-            subject: 'Signup succeded',
-            html: `<h1>You are successfully signed up ${name}!</h1>`,
-          });
-        })
-        .catch(err => console.error(err));
+  // Encrypting password
+  return bcrypt
+    .hash(password, 12)
+    .then(hashedPassword => {
+      const newUser = new User({
+        name,
+        email,
+        password: hashedPassword,
+        cart: { items: [] },
+      });
+      return newUser.save();
+    })
+    .then(result => {
+      res.redirect('/login');
+      // Sending email
+      return transporter.sendMail({
+        to: email,
+        from: 'shop@learning-node-js.com',
+        subject: 'Signup succeded',
+        html: `<h1>You are successfully signed up ${name}!</h1>`,
+      });
     })
     .catch(err => console.error(err));
 };

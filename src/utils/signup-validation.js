@@ -1,8 +1,12 @@
-/* eslint-disable no-unused-vars */
 /**
  * NPM import
  */
 import { check, body } from 'express-validator/check';
+
+/**
+ * Local import
+ */
+import User from '../models/user';
 
 /**
  * Code
@@ -12,11 +16,15 @@ const signupValidation = [
     .isEmail()
     .withMessage('Please enter a valid email')
     .custom((value, { req }) => {
-      if (value === 'test@test.com') {
-        throw new Error('This email address is forbidden !');
-      }
-      // Important to return true after the condition
-      return true;
+      return User.findOne({ email: value }).then(user => {
+        if (user) {
+          // eslint-disable-next-line prefer-promise-reject-errors
+          return Promise.reject(
+            'E-mail exists already, please choose a different one '
+          );
+        }
+        return true;
+      });
     }),
   body(
     'password',
@@ -24,7 +32,7 @@ const signupValidation = [
   ).isLength({ min: 8 }),
   body('confirmPassword').custom((value, { req }) => {
     if (value !== req.body.password) {
-      throw new Error('Passwords are not the same');
+      throw new Error("Password and confirmed password aren't the same");
     }
     return true;
   }),
