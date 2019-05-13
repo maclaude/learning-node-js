@@ -99,6 +99,7 @@ const getSignup = (req, res, next) => {
     path: '/signup',
     errorMessage: checkForErrors(req),
     oldInputs: { name: '', email: '', password: '', confirmPassword: '' },
+    validationErrors: [],
   });
 };
 
@@ -113,6 +114,7 @@ const postSignup = (req, res, next) => {
       path: '/signup',
       errorMessage: errors.array()[0].msg,
       oldInputs: { name, email, password, confirmPassword },
+      validationErrors: errors.array(),
     });
   }
 
