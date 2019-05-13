@@ -52,13 +52,11 @@ const postAddProduct = (req, res, next) => {
 
   return product
     .save()
-    .then(result => {
+    .then(response => {
       console.log('Product created');
       res.redirect('/admin/products');
     })
-    .catch(err => {
-      console.error(err);
-    });
+    .catch(err => console.error(err));
 };
 
 const getProducts = (req, res, next) => {
@@ -80,28 +78,27 @@ const getEditProduct = (req, res, next) => {
   const editMode = req.query.edit;
 
   if (!editMode) {
-    res.redirect('/');
-  } else {
-    const { productId } = req.params;
-
-    Product.findById(productId)
-      .then(product => {
-        if (!product) {
-          res.redirect('/');
-        } else {
-          res.render('admin/edit-product', {
-            pageTitle: 'Edit Product',
-            path: '/admin/edit-product',
-            editing: editMode,
-            hasError: false,
-            errorMessage: null,
-            item: product,
-            validationErrors: [],
-          });
-        }
-      })
-      .catch(err => console.error(err));
+    return res.redirect('/');
   }
+  const { productId } = req.params;
+
+  return Product.findById(productId)
+    .then(product => {
+      if (!product) {
+        return res.redirect('/');
+      }
+
+      return res.render('admin/edit-product', {
+        pageTitle: 'Edit Product',
+        path: '/admin/edit-product',
+        editing: editMode,
+        hasError: false,
+        errorMessage: null,
+        item: product,
+        validationErrors: [],
+      });
+    })
+    .catch(err => console.error(err));
 };
 
 const postEditProduct = (req, res, next) => {
@@ -135,8 +132,8 @@ const postEditProduct = (req, res, next) => {
 
       return updatedProduct
         .save()
-        .then(result => {
-          console.log('product updated');
+        .then(response => {
+          console.log('Product updated');
           res.redirect('/admin/products');
         })
         .catch(err => console.error(err));
@@ -149,8 +146,8 @@ const postDeleteProduct = (req, res, next) => {
   const { _id: currentUserId } = req.user;
 
   Product.deleteOne({ _id: productId, userId: currentUserId })
-    .then(result => {
-      console.log('product deleted');
+    .then(response => {
+      console.log('Product deleted');
       res.redirect('/admin/products');
     })
     .catch(err => console.error(err));

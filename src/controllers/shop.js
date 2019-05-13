@@ -70,10 +70,7 @@ const postCart = (req, res, next) => {
     .then(product => {
       return req.user.addToCart(product);
     })
-    .then(result => {
-      console.log(result);
-      res.redirect('/cart');
-    })
+    .then(response => res.redirect('/cart'))
     .catch(err => console.error(err));
 };
 
@@ -82,7 +79,7 @@ const postCartDeleteProduct = (req, res, next) => {
 
   req.user
     .deleteCartItem(productId)
-    .then(result => res.redirect('/cart'))
+    .then(response => res.redirect('/cart'))
     .catch(err => console.error(err));
 };
 
@@ -104,7 +101,6 @@ const postOrder = (req, res, next) => {
     .execPopulate()
     .then(user => {
       const products = user.cart.items.map(item => {
-        // eslint-disable-next-line no-underscore-dangle
         return { product: { ...item.productId._doc }, quantity: item.quantity };
       });
 
@@ -118,8 +114,8 @@ const postOrder = (req, res, next) => {
 
       return order.save();
     })
-    .then(result => req.user.clearCart())
-    .then(() => res.redirect('/orders'))
+    .then(response => req.user.clearCart())
+    .then(response => res.redirect('/orders'))
     .catch(err => console.error(err));
 };
 

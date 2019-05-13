@@ -124,7 +124,7 @@ app.use(getNotFound);
  */
 mongoose
   .connect(DB_URI, { useNewUrlParser: true })
-  .then(result => {
+  .then(response => {
     console.log('Connected');
     // Start the server
     app.listen(3000);

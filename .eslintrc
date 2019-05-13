@@ -8,7 +8,7 @@
   "rules": {
     "prettier/prettier": ["error"],
     "no-unused-vars": [
-      1,
+      "error",
       {
         "ignoreSiblings": true,
         "argsIgnorePattern": "res|next|^err"
@@ -18,7 +18,11 @@
     "no-underscore-dangle": [
       "error",
       {
-        "allowAfterThis": true
+        "allowAfterThis": true,
+        "allow": [
+          "_id",
+          "_doc"
+        ]
       }
     ],
     "no-unused-expressions": [

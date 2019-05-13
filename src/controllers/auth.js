@@ -86,11 +86,9 @@ const postLogin = (req, res, next) => {
               req.session.user = user;
               req.session.isLoggedIn = true;
               // Saving the session, then redirect to the homepage
-              return req.session.save(err => {
-                console.error(err);
-                res.redirect('/');
-              });
+              return req.session.save(err => res.redirect('/'));
             }
+            // Otherwise re-render the login page
             return res.status(422).render('auth/login', {
               pageTitle: 'Login',
               path: '/login',
@@ -145,7 +143,7 @@ const postSignup = (req, res, next) => {
       });
       return newUser.save();
     })
-    .then(result => {
+    .then(response => {
       res.redirect('/login');
       // Sending email
       return transporter.sendMail({
@@ -193,7 +191,7 @@ const postResetPassword = (req, res, next) => {
         // Saving user update
         return currentUser.save();
       })
-      .then(result => {
+      .then(response => {
         // Redirecting to homepage
         res.redirect('/');
         // Sending email to the user with the reset-password link
@@ -207,7 +205,7 @@ const postResetPassword = (req, res, next) => {
           `,
         });
       })
-      .catch(err => console.log(err));
+      .catch(err => console.error(err));
   });
 };
 
@@ -220,7 +218,6 @@ const getNewPassword = (req, res, next) => {
   })
     .then(user => {
       const { _id } = user;
-
       // Rendering the view with the userId in order to post new password
       res.render('auth/new-password', {
         pageTitle: 'Update Password',
@@ -255,15 +252,12 @@ const postNewPassword = (req, res, next) => {
       // Saving updated user
       return resetUser.save();
     })
-    .then(result => res.redirect('/login'))
+    .then(response => res.redirect('/login'))
     .catch(err => console.error(err));
 };
 
 const postLogout = (req, res, next) => {
-  req.session.destroy(err => {
-    console.log(err);
-    res.redirect('/');
-  });
+  req.session.destroy(err => res.redirect('/'));
 };
 
 /**
