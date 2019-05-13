@@ -43,6 +43,8 @@ const getLogin = (req, res, next) => {
     pageTitle: 'Login',
     path: '/login',
     errorMessage: checkForErrors(req),
+    oldInputs: { email: '', password: '' },
+    validationErrors: [],
   });
 };
 
@@ -56,6 +58,8 @@ const postLogin = (req, res, next) => {
       pageTitle: 'Login',
       path: '/login',
       errorMessage: errors.array()[0].msg,
+      oldInputs: { email, password },
+      validationErrors: errors.array(),
     });
   }
 
@@ -64,9 +68,15 @@ const postLogin = (req, res, next) => {
     .then(user => {
       if (!user) {
         // If there is no user, redirect to login
-        req.flash('error', 'Invalid email or password');
-        res.redirect('/login');
-      } else {
+        return res.status(422).render('auth/login', {
+          pageTitle: 'Login',
+          path: '/login',
+          errorMessage: 'Invalid email or password',
+          oldInputs: { email, password },
+          validationErrors: [],
+        });
+      }
+      return (
         bcrypt
           // Comparing passwords
           .compare(password, user.password)
@@ -81,14 +91,19 @@ const postLogin = (req, res, next) => {
                 res.redirect('/');
               });
             }
-            req.flash('error', 'Invalid email or password');
-            return res.redirect('/login');
+            return res.status(422).render('auth/login', {
+              pageTitle: 'Login',
+              path: '/login',
+              errorMessage: 'Invalid email or password',
+              oldInputs: { email, password },
+              validationErrors: [],
+            });
           })
           .catch(err => {
             console.error(err);
             res.redirect('/login');
-          });
-      }
+          })
+      );
     })
     .catch(err => console.error(err));
 };
