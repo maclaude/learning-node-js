@@ -43,6 +43,10 @@ label {
   font-size: 1.2em;
 }
 
+.main-form__file-input {
+  font-size: 1em;
+}
+
 .main-form__input:focus {
   outline: none;
 }
