@@ -29,6 +29,7 @@ const getAddProduct = (req, res, next) => {
 
 const postAddProduct = (req, res, next) => {
   const { title, imageUrl, description, price } = req.body;
+  console.log(req.file);
 
   const errors = validationResult(req);
   // If there is errors, set status code 422 and re-render the page
