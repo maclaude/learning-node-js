@@ -60,16 +60,10 @@ const postAddProduct = (req, res, next) => {
       res.redirect('/admin/products');
     })
     .catch(err => {
-      // return res.status(500).render('admin/edit-product', {
-      //   pageTitle: 'Add Product',
-      //   path: '/admin/add-product',
-      //   editing: false,
-      //   hasError: true,
-      //   errorMessage: 'Database operation failed, please try again',
-      //   item: { title, imageUrl, description, price },
-      //   validationErrors: [],
-      // });
-      res.redirect('/500');
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      // When calling next() with an argument, it will go directly to the error handling middleware
+      return next(error);
     });
 };
 

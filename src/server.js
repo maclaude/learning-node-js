@@ -127,6 +127,11 @@ app.get('/500', get500);
 // 404 Error Page
 app.use(get404);
 
+// Error Handling
+app.use((error, req, res, next) => {
+  res.redirect('/500');
+});
+
 /**
  * Database connexion with Mongoose
  */
