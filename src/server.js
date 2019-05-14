@@ -88,6 +88,13 @@ app.use(flash());
 // Initialize CSRF protection
 app.use(csrfProtection);
 
+// Locals variables available in the rendered views
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.session.isLoggedIn;
+  res.locals.csrfToken = req.csrfToken();
+  next();
+});
+
 // Initialize user
 app.use((req, res, next) => {
   if (!req.session.user) {
@@ -104,16 +111,12 @@ app.use((req, res, next) => {
         return next();
       })
       .catch(err => {
-        throw new Error(err);
+        // Outside ASYNC, in SYNC you can throw an error
+        // Inside ASYNC, need to call next to throw an error
+        // Otherwise Express will not detect it
+        next(new Error(err));
       });
   }
-});
-
-// Locals variables available in the rendered views
-app.use((req, res, next) => {
-  res.locals.isAuthenticated = req.session.isLoggedIn;
-  res.locals.csrfToken = req.csrfToken();
-  next();
 });
 
 // Routes
@@ -129,7 +132,11 @@ app.use(get404);
 
 // Error Handling
 app.use((error, req, res, next) => {
-  res.redirect('/500');
+  res.status(500).render('error/500', {
+    pageTitle: 'Error occured',
+    path: '/500',
+    isAuthenticated: req.session.isLoggedIn,
+  });
 });
 
 /**
