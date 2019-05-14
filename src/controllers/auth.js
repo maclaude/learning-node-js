@@ -21,6 +21,7 @@ import { validationResult } from 'express-validator/check';
 import User from '../models/user';
 // Utils
 import checkForErrors from '../utils/check-for-errors';
+import errorHandler from '../utils/error-handler';
 
 /**
  * Code
@@ -103,7 +104,7 @@ const postLogin = (req, res, next) => {
           })
       );
     })
-    .catch(err => console.error(err));
+    .catch(errorHandler(next));
 };
 
 const getSignup = (req, res, next) => {
@@ -153,7 +154,7 @@ const postSignup = (req, res, next) => {
         html: `<h1>You are successfully signed up ${name}!</h1>`,
       });
     })
-    .catch(err => console.error(err));
+    .catch(errorHandler(next));
 };
 
 const getResetPassword = (req, res, next) => {
@@ -205,7 +206,7 @@ const postResetPassword = (req, res, next) => {
           `,
         });
       })
-      .catch(err => console.error(err));
+      .catch(errorHandler(next));
   });
 };
 
@@ -227,7 +228,7 @@ const getNewPassword = (req, res, next) => {
         passwordToken: token,
       });
     })
-    .catch(err => console.error(err));
+    .catch(errorHandler(next));
 };
 
 const postNewPassword = (req, res, next) => {
@@ -253,7 +254,7 @@ const postNewPassword = (req, res, next) => {
       return resetUser.save();
     })
     .then(response => res.redirect('/login'))
-    .catch(err => console.error(err));
+    .catch(errorHandler(next));
 };
 
 const postLogout = (req, res, next) => {

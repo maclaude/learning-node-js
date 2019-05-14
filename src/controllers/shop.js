@@ -6,6 +6,8 @@
 // Models
 import Product from '../models/product';
 import Order from '../models/order';
+// Utils
+import errorHandler from '../utils/error-handler';
 
 /**
  * Code
@@ -19,7 +21,7 @@ const getIndex = (req, res, next) => {
         path: '/',
       });
     })
-    .catch(err => console.error(err));
+    .catch(errorHandler(next));
 };
 
 const getProducts = (req, res, next) => {
@@ -31,7 +33,7 @@ const getProducts = (req, res, next) => {
         path: '/products',
       });
     })
-    .catch(err => console.error(err));
+    .catch(errorHandler(next));
 };
 
 const getProduct = (req, res, next) => {
@@ -45,7 +47,7 @@ const getProduct = (req, res, next) => {
         item: product,
       });
     })
-    .catch(err => console.error(err));
+    .catch(errorHandler(next));
 };
 
 const getCart = (req, res, next) => {
@@ -60,7 +62,7 @@ const getCart = (req, res, next) => {
         products,
       });
     })
-    .catch(err => console.error(err));
+    .catch(errorHandler(next));
 };
 
 const postCart = (req, res, next) => {
@@ -71,7 +73,7 @@ const postCart = (req, res, next) => {
       return req.user.addToCart(product);
     })
     .then(response => res.redirect('/cart'))
-    .catch(err => console.error(err));
+    .catch(errorHandler(next));
 };
 
 const postCartDeleteProduct = (req, res, next) => {
@@ -80,7 +82,7 @@ const postCartDeleteProduct = (req, res, next) => {
   req.user
     .deleteCartItem(productId)
     .then(response => res.redirect('/cart'))
-    .catch(err => console.error(err));
+    .catch(errorHandler(next));
 };
 
 const getOrders = (req, res, next) => {
@@ -92,7 +94,7 @@ const getOrders = (req, res, next) => {
         orders,
       });
     })
-    .catch(err => console.error(err));
+    .catch(errorHandler(next));
 };
 
 const postOrder = (req, res, next) => {
@@ -116,7 +118,7 @@ const postOrder = (req, res, next) => {
     })
     .then(response => req.user.clearCart())
     .then(response => res.redirect('/orders'))
-    .catch(err => console.error(err));
+    .catch(errorHandler(next));
 };
 
 /**

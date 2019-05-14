@@ -4,13 +4,14 @@
  * NPM import
  */
 import { validationResult } from 'express-validator/check';
-import mongoose from 'mongoose'; // Temporary
 
 /**
  * Local import
  */
 // Models
 import Product from '../models/product';
+// Utils
+import errorHandler from '../utils/error-handler';
 
 /**
  * Code
@@ -44,8 +45,6 @@ const postAddProduct = (req, res, next) => {
   }
 
   const product = new Product({
-    // Faking an error in order to test
-    _id: mongoose.Types.ObjectId('5cd033a8128aa827f6bb1497'),
     title,
     price,
     description,
@@ -59,12 +58,7 @@ const postAddProduct = (req, res, next) => {
       console.log('Product created');
       res.redirect('/admin/products');
     })
-    .catch(err => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      // When calling next() with an argument, it will go directly to the error handling middleware
-      return next(error);
-    });
+    .catch(errorHandler(next));
 };
 
 const getProducts = (req, res, next) => {
@@ -78,7 +72,7 @@ const getProducts = (req, res, next) => {
         path: '/admin/products',
       });
     })
-    .catch(err => console.error(err));
+    .catch(errorHandler(next));
 };
 
 const getEditProduct = (req, res, next) => {
@@ -106,7 +100,7 @@ const getEditProduct = (req, res, next) => {
         validationErrors: [],
       });
     })
-    .catch(err => console.error(err));
+    .catch(errorHandler(next));
 };
 
 const postEditProduct = (req, res, next) => {
@@ -144,9 +138,9 @@ const postEditProduct = (req, res, next) => {
           console.log('Product updated');
           res.redirect('/admin/products');
         })
-        .catch(err => console.error(err));
+        .catch(errorHandler(next));
     })
-    .catch(err => console.error(err));
+    .catch(errorHandler(next));
 };
 
 const postDeleteProduct = (req, res, next) => {
@@ -158,7 +152,7 @@ const postDeleteProduct = (req, res, next) => {
       console.log('Product deleted');
       res.redirect('/admin/products');
     })
-    .catch(err => console.error(err));
+    .catch(errorHandler(next));
 };
 
 /**
