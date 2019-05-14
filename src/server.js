@@ -22,7 +22,7 @@ import flash from 'connect-flash';
 // Models
 import User from './models/user';
 // Controllers middleware functions
-import getNotFound from './controllers/errors';
+import { get404, get500 } from './controllers/error';
 // Routes
 import adminRoutes from './routes/admin';
 import shopRoutes from './routes/shop';
@@ -97,10 +97,15 @@ app.use((req, res, next) => {
 
     User.findById(_id)
       .then(user => {
+        if (!user) {
+          return next();
+        }
         req.user = user;
-        next();
+        return next();
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        throw new Error(err);
+      });
   }
 });
 
@@ -116,8 +121,11 @@ app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);
 
+// 500 Error Page
+app.get('/500', get500);
+
 // 404 Error Page
-app.use(getNotFound);
+app.use(get404);
 
 /**
  * Database connexion with Mongoose

@@ -4,6 +4,7 @@
  * NPM import
  */
 import { validationResult } from 'express-validator/check';
+import mongoose from 'mongoose'; // Temporary
 
 /**
  * Local import
@@ -43,6 +44,8 @@ const postAddProduct = (req, res, next) => {
   }
 
   const product = new Product({
+    // Faking an error in order to test
+    _id: mongoose.Types.ObjectId('5cd033a8128aa827f6bb1497'),
     title,
     price,
     description,
@@ -56,7 +59,18 @@ const postAddProduct = (req, res, next) => {
       console.log('Product created');
       res.redirect('/admin/products');
     })
-    .catch(err => console.error(err));
+    .catch(err => {
+      // return res.status(500).render('admin/edit-product', {
+      //   pageTitle: 'Add Product',
+      //   path: '/admin/add-product',
+      //   editing: false,
+      //   hasError: true,
+      //   errorMessage: 'Database operation failed, please try again',
+      //   item: { title, imageUrl, description, price },
+      //   validationErrors: [],
+      // });
+      res.redirect('/500');
+    });
 };
 
 const getProducts = (req, res, next) => {
