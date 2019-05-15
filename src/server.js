@@ -67,6 +67,22 @@ const fileStorage = multer.diskStorage({
   },
 });
 
+// Multer file filter
+const fileFilter = (req, file, callback) => {
+  if (
+    // Types
+    file.mimetype === 'image/png' ||
+    file.mimetype === 'image/jpg' ||
+    file.mimetype === 'image/jpeg'
+  ) {
+    // Accept
+    callback(null, true);
+  } else {
+    // Reject
+    callback(null, false);
+  }
+};
+
 // Set view engine configuration
 app.set('view engine', 'ejs');
 
@@ -82,7 +98,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Cookie parser
 app.use(cookieParser());
 // Initialize Multer File upload
-app.use(multer({ storage: fileStorage }).single('image'));
+app.use(multer({ storage: fileStorage, fileFilter }).single('image'));
 
 // Access to the public directory path
 app.use(express.static(path.join(__dirname, 'public')));
