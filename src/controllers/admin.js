@@ -28,7 +28,11 @@ const getAddProduct = (req, res, next) => {
 };
 
 const postAddProduct = (req, res, next) => {
-  const { title, imageUrl, description, price } = req.body;
+  const { title, description, price } = req.body;
+  // Temporary data
+  const imageUrl =
+    'https://www.whsmith.co.uk/pws/client/images/catalogue/products/3529/54/19/xlarge/35295419_1.jpg';
+
   console.log(req.file);
 
   const errors = validationResult(req);

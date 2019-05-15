@@ -26,8 +26,7 @@ const signupValidation = [
         }
         return true;
       });
-    })
-    .normalizeEmail(),
+    }),
   body('password', 'Please enter a password with at least 8 characters')
     .isLength({ min: 8 })
     .trim(),
@@ -44,8 +43,7 @@ const signupValidation = [
 const loginValidation = [
   check('email')
     .isEmail()
-    .withMessage('Please enter a valid email')
-    .normalizeEmail(),
+    .withMessage('Please enter a valid email'),
   body('password', 'Please enter a password with at least 8 characters')
     .isLength({ min: 8 })
     .trim(),

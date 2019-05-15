@@ -16,6 +16,7 @@ import connectMongodbSession from 'connect-mongodb-session';
 import csrf from 'csurf';
 import flash from 'connect-flash';
 import multer from 'multer';
+import uuidV4 from 'uuid/v4';
 
 /**
  * Local import
@@ -55,6 +56,17 @@ const store = new MongodbSession({
 // CSRF protection
 const csrfProtection = csrf();
 
+// Multer file storage
+const fileStorage = multer.diskStorage({
+  destination: (req, file, callback) => {
+    callback(null, 'images');
+  },
+  filename: (req, file, callback) => {
+    const fileName = `${uuidV4()}-${file.originalname}`;
+    callback(null, fileName);
+  },
+});
+
 // Set view engine configuration
 app.set('view engine', 'ejs');
 
@@ -70,7 +82,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Cookie parser
 app.use(cookieParser());
 // Initialize Multer File upload
-app.use(multer({ dest: 'images' }).single('image'));
+app.use(multer({ storage: fileStorage }).single('image'));
 
 // Access to the public directory path
 app.use(express.static(path.join(__dirname, 'public')));
