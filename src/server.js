@@ -59,7 +59,7 @@ const csrfProtection = csrf();
 // Multer file storage
 const fileStorage = multer.diskStorage({
   destination: (req, file, callback) => {
-    callback(null, 'images');
+    callback(null, 'src/images');
   },
   filename: (req, file, callback) => {
     const fileName = `${uuidV4()}-${file.originalname}`;
@@ -102,6 +102,7 @@ app.use(multer({ storage: fileStorage, fileFilter }).single('image'));
 
 // Access to the public directory path
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // Configuration of the session setup
 app.use(

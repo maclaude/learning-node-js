@@ -57,7 +57,8 @@ const postAddProduct = (req, res, next) => {
     });
   }
 
-  const imageUrl = image.path;
+  // Image URL for database entry
+  const imageUrl = `images/${image.filename}`;
 
   const product = new Product({
     title,
@@ -142,12 +143,15 @@ const postEditProduct = (req, res, next) => {
         return res.redirect('/');
       }
 
+      // Image URL for database entry
+      const imageUrl = `images/${image.filename}`;
+
       const updatedProduct = product;
       updatedProduct.title = title;
       updatedProduct.price = price;
       updatedProduct.description = description;
       if (image) {
-        updatedProduct.imageUrl = image.path;
+        updatedProduct.imageUrl = imageUrl;
       }
 
       return updatedProduct
