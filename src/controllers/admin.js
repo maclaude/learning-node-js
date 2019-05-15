@@ -29,11 +29,19 @@ const getAddProduct = (req, res, next) => {
 
 const postAddProduct = (req, res, next) => {
   const { title, description, price } = req.body;
-  // Temporary data
-  const imageUrl =
-    'https://www.whsmith.co.uk/pws/client/images/catalogue/products/3529/54/19/xlarge/35295419_1.jpg';
+  const image = req.file;
 
-  console.log(req.file);
+  if (!image) {
+    return res.status(422).render('admin/edit-product', {
+      pageTitle: 'Add Product',
+      path: '/admin/add-product',
+      editing: false,
+      hasError: true,
+      errorMessage: 'Attached file is not an image',
+      item: { title, description, price },
+      validationErrors: [],
+    });
+  }
 
   const errors = validationResult(req);
   // If there is errors, set status code 422 and re-render the page
@@ -44,10 +52,12 @@ const postAddProduct = (req, res, next) => {
       editing: false,
       hasError: true,
       errorMessage: errors.array()[0].msg,
-      item: { title, imageUrl, description, price },
+      item: { title, description, price },
       validationErrors: errors.array(),
     });
   }
+
+  const imageUrl = image.path;
 
   const product = new Product({
     title,
@@ -109,8 +119,9 @@ const getEditProduct = (req, res, next) => {
 };
 
 const postEditProduct = (req, res, next) => {
-  const { title, price, description, imageUrl, productId } = req.body;
+  const { title, price, description, productId } = req.body;
   const { _id: currentUserId } = req.user;
+  const image = req.file;
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -120,7 +131,7 @@ const postEditProduct = (req, res, next) => {
       editing: true,
       hasError: true,
       errorMessage: errors.array()[0].msg,
-      item: { title, imageUrl, description, price, _id: productId },
+      item: { title, description, price, _id: productId },
       validationErrors: errors.array(),
     });
   }
@@ -135,7 +146,9 @@ const postEditProduct = (req, res, next) => {
       updatedProduct.title = title;
       updatedProduct.price = price;
       updatedProduct.description = description;
-      updatedProduct.imageUrl = imageUrl;
+      if (image) {
+        updatedProduct.imageUrl = image.path;
+      }
 
       return updatedProduct
         .save()
