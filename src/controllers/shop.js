@@ -6,6 +6,11 @@ import fs from 'fs';
 import path from 'path';
 
 /**
+ * Node import
+ */
+import PDFDocument from 'pdfkit';
+
+/**
  * Local import
  */
 // Models
@@ -142,13 +147,19 @@ const getInvoice = (req, res, next) => {
       const invoiceName = `invoice-${orderId}.pdf`;
       // Setting invoice path
       const invoicePath = path.join('src', 'data', 'invoices', invoiceName);
-      // Streaming the invoice
-      const file = fs.createReadStream(invoicePath);
+      // Create a new PDF document
+      const pdfDoc = new PDFDocument();
       res.setHeader('Content-Type', 'application/pdf');
       // inline: open in the browser - attachment: download
       res.setHeader('Content-Disposition', `inline; filename=${invoiceName}`);
-      // Send streamed data to the response
-      return file.pipe(res);
+      // Saving the doc into the invoices folder
+      pdfDoc.pipe(fs.createWriteStream(invoicePath));
+      // Return the file to the client
+      pdfDoc.pipe(res);
+      // Adding content to the document
+      pdfDoc.text('Hello World!');
+      // Ending document edition
+      pdfDoc.end();
     })
     .catch(err => next(err));
 };
