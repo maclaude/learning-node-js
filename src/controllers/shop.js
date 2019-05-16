@@ -157,7 +157,21 @@ const getInvoice = (req, res, next) => {
       // Return the file to the client
       pdfDoc.pipe(res);
       // Adding content to the document
-      pdfDoc.text('Hello World!');
+      pdfDoc.fontSize(20).text('Invoice', {
+        underline: true,
+      });
+      // Initating the total price
+      let totalPrice = 0;
+      order.products.forEach(prod => {
+        // Updating the total price
+        totalPrice += prod.quantity * prod.product.price;
+        pdfDoc
+          .fontSize(14)
+          .text(
+            `${prod.product.title} - ${prod.quantity} x ${prod.product.price} $`
+          );
+      });
+      pdfDoc.fontSize(16).text(`Total: ${totalPrice} $`);
       // Ending document edition
       pdfDoc.end();
     })
