@@ -133,7 +133,7 @@ const postOrder = (req, res, next) => {
 
 const getInvoice = (req, res, next) => {
   const { orderId } = req.params;
-  // finding the order in the database
+  // Finding the order in the database
   Order.findById(orderId)
     .then(order => {
       if (!order) {

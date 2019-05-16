@@ -12,6 +12,7 @@ import { validationResult } from 'express-validator/check';
 import Product from '../models/product';
 // Utils
 import errorHandler from '../utils/error-handler';
+import deleteFile from '../utils/file';
 
 /**
  * Code
@@ -151,6 +152,8 @@ const postEditProduct = (req, res, next) => {
       updatedProduct.price = price;
       updatedProduct.description = description;
       if (image) {
+        // Deleting previous image
+        deleteFile(`src/${product.imageUrl}`);
         updatedProduct.imageUrl = imageUrl;
       }
 
@@ -168,8 +171,15 @@ const postEditProduct = (req, res, next) => {
 const postDeleteProduct = (req, res, next) => {
   const { productId } = req.body;
   const { _id: currentUserId } = req.user;
-
-  Product.deleteOne({ _id: productId, userId: currentUserId })
+  Product.findById(productId)
+    .then(product => {
+      if (!product) {
+        return next(new Error('Product Not Found'));
+      }
+      // Deleting previous image
+      deleteFile(`src/${product.imageUrl}`);
+      return Product.deleteOne({ _id: productId, userId: currentUserId });
+    })
     .then(response => {
       console.log('Product deleted');
       res.redirect('/admin/products');
