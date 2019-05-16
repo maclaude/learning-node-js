@@ -12,7 +12,7 @@ import { validationResult } from 'express-validator/check';
 import Product from '../models/product';
 // Utils
 import errorHandler from '../utils/error-handler';
-import deleteFile from '../utils/file';
+import deleteFile from '../utils/delete-file';
 
 /**
  * Code

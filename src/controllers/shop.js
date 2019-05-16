@@ -173,7 +173,7 @@ const getInvoice = (req, res, next) => {
       });
       pdfDoc.fontSize(16).text(`Total: ${totalPrice} $`);
       // Ending document edition
-      pdfDoc.end();
+      return pdfDoc.end();
     })
     .catch(err => next(err));
 };
