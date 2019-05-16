@@ -133,9 +133,13 @@ const getInvoice = (req, res, next) => {
 
   fs.readFile(invoicePath, (err, data) => {
     if (err) {
-      return next(err);
+      next(err);
+    } else {
+      res.setHeader('Content-Type', 'application/pdf');
+      // inline: open in the browser - attachment: download
+      res.setHeader('Content-Disposition', `inline; filename=${invoiceName}`);
+      res.send(data);
     }
-    return res.send(data);
   });
 };
 
