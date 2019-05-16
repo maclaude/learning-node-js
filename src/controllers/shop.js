@@ -1,4 +1,9 @@
 // Shop Controller
+/**
+ * Node Core Module import
+ */
+import fs from 'fs';
+import path from 'path';
 
 /**
  * Local import
@@ -121,6 +126,19 @@ const postOrder = (req, res, next) => {
     .catch(errorHandler(next));
 };
 
+const getInvoice = (req, res, next) => {
+  const { orderId } = req.params;
+  const invoiceName = `invoice-${orderId}.pdf`;
+  const invoicePath = path.join('src', 'data', 'invoices', invoiceName);
+
+  fs.readFile(invoicePath, (err, data) => {
+    if (err) {
+      return next(err);
+    }
+    return res.send(data);
+  });
+};
+
 /**
  * Export
  */
@@ -133,4 +151,5 @@ export {
   postCartDeleteProduct,
   getOrders,
   postOrder,
+  getInvoice,
 };
