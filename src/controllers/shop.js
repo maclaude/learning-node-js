@@ -142,21 +142,13 @@ const getInvoice = (req, res, next) => {
       const invoiceName = `invoice-${orderId}.pdf`;
       // Setting invoice path
       const invoicePath = path.join('src', 'data', 'invoices', invoiceName);
-      // Getting the invoice
-      return fs.readFile(invoicePath, (err, data) => {
-        if (err) {
-          next(err);
-        } else {
-          res.setHeader('Content-Type', 'application/pdf');
-          // inline: open in the browser - attachment: download
-          res.setHeader(
-            'Content-Disposition',
-            `inline; filename=${invoiceName}`
-          );
-          // Sending the invoice
-          res.send(data);
-        }
-      });
+      // Streaming the invoice
+      const file = fs.createReadStream(invoicePath);
+      res.setHeader('Content-Type', 'application/pdf');
+      // inline: open in the browser - attachment: download
+      res.setHeader('Content-Disposition', `inline; filename=${invoiceName}`);
+      // Send streamed data to the response
+      return file.pipe(res);
     })
     .catch(err => next(err));
 };
