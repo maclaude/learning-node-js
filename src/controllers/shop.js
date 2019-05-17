@@ -60,12 +60,30 @@ const getIndex = (req, res, next) => {
 };
 
 const getProducts = (req, res, next) => {
+  const { page } = req.query;
+  const currentPage = parseInt(page, 10) || 1;
+
+  let totalProducts;
+
   Product.find()
+    .countDocuments()
+    .then(numProducts => {
+      totalProducts = numProducts;
+      return Product.find()
+        .skip((page - 1) * ITEMS_PER_PAGE)
+        .limit(ITEMS_PER_PAGE);
+    })
     .then(products => {
-      res.render('shop/index', {
+      res.render('shop/product-list', {
         items: products,
         pageTitle: 'Products',
         path: '/products',
+        currentPage,
+        hasPreviousPage: currentPage > 1,
+        hasNextPage: ITEMS_PER_PAGE * currentPage < totalProducts,
+        previousPage: currentPage - 1,
+        nextPage: currentPage + 1,
+        lastPage: Math.ceil(totalProducts / ITEMS_PER_PAGE),
       });
     })
     .catch(errorHandler(next));
