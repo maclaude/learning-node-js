@@ -17,6 +17,7 @@ import {
   postOrder,
   getOrders,
   getInvoice,
+  getCheckout,
 } from '../controllers/shop';
 // Checking authentication middleware
 import isAuth from '../middlewares/is-auth';
@@ -46,6 +47,8 @@ router.post('/create-order', isAuth, postOrder);
 router.get('/orders', isAuth, getOrders);
 
 router.get('/orders/:orderId', isAuth, getInvoice);
+
+router.get('/checkout', isAuth, getCheckout);
 
 /**
  * Export

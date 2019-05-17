@@ -221,6 +221,26 @@ const getInvoice = (req, res, next) => {
     .catch(err => next(err));
 };
 
+const getCheckout = (req, res, next) => {
+  req.user
+    .populate('cart.items.productId') // To get the data of the relation
+    .execPopulate() // In order to get a promise
+    .then(user => {
+      const products = user.cart.items;
+      const totalSum = products.reduce(
+        (total, product) => total + product.quantity * product.productId.price,
+        0
+      );
+      res.render('shop/checkout', {
+        pageTitle: 'Checkout',
+        path: '/checkout',
+        products,
+        totalSum,
+      });
+    })
+    .catch(errorHandler(next));
+};
+
 /**
  * Export
  */
@@ -234,4 +254,5 @@ export {
   getOrders,
   postOrder,
   getInvoice,
+  getCheckout,
 };
