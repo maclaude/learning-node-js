@@ -22,21 +22,35 @@ import errorHandler from '../utils/error-handler';
 /**
  * Code
  */
-const ITEM_PER_PAGE = 4;
+const ITEMS_PER_PAGE = 4;
 
 const getIndex = (req, res, next) => {
   const { page } = req.query;
+  let totalProducts;
 
   Product.find()
-    // Skipping products of previous pages
-    .skip((page - 1) * ITEM_PER_PAGE)
-    // Limit of products we want to retrieve
-    .limit(ITEM_PER_PAGE)
+    .countDocuments()
+    .then(numProducts => {
+      totalProducts = numProducts;
+      return (
+        Product.find()
+          // Skipping products of previous pages
+          .skip((page - 1) * ITEMS_PER_PAGE)
+          // Limit of products we want to retrieve
+          .limit(ITEMS_PER_PAGE)
+      );
+    })
     .then(products => {
       res.render('shop/index', {
         items: products,
         pageTitle: 'Shop',
         path: '/',
+        totalProducts,
+        hasPreviousPage: page > 1,
+        hasNextPage: ITEMS_PER_PAGE * page < totalProducts,
+        previousPage: page - 1,
+        nextPage: page + 1,
+        lastPage: Math.ceil(totalProducts / ITEMS_PER_PAGE),
       });
     })
     .catch(errorHandler(next));
