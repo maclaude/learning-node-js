@@ -13,7 +13,7 @@ import {
   getProducts,
   getEditProduct,
   postEditProduct,
-  postDeleteProduct,
+  deleteProduct,
 } from '../controllers/admin';
 // Checking authentication middleware
 import isAuth from '../middlewares/is-auth';
@@ -38,7 +38,7 @@ router.get('/edit-product/:productId', isAuth, getEditProduct);
 
 router.post('/edit-product', isAuth, productFormValidation, postEditProduct);
 
-router.post('/delete-product', isAuth, postDeleteProduct);
+router.delete('/product/:productId', isAuth, deleteProduct);
 
 /**
  * Export
