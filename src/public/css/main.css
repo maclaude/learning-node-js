@@ -209,6 +209,7 @@ button:focus {
   font-weight: 500;
 }
 
-.pagination-page:hover {
+.pagination-page:hover,
+.pagination-page--active {
   border-bottom: 2px solid #000;
 }

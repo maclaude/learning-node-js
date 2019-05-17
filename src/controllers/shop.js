@@ -26,6 +26,9 @@ const ITEMS_PER_PAGE = 4;
 
 const getIndex = (req, res, next) => {
   const { page } = req.query;
+  // if page is undefined set value to 1
+  const currentPage = parseInt(page, 10) || 1;
+
   let totalProducts;
 
   Product.find()
@@ -45,11 +48,11 @@ const getIndex = (req, res, next) => {
         items: products,
         pageTitle: 'Shop',
         path: '/',
-        totalProducts,
-        hasPreviousPage: page > 1,
-        hasNextPage: ITEMS_PER_PAGE * page < totalProducts,
-        previousPage: page - 1,
-        nextPage: page + 1,
+        currentPage,
+        hasPreviousPage: currentPage > 1,
+        hasNextPage: ITEMS_PER_PAGE * currentPage < totalProducts,
+        previousPage: currentPage - 1,
+        nextPage: currentPage + 1,
         lastPage: Math.ceil(totalProducts / ITEMS_PER_PAGE),
       });
     })
