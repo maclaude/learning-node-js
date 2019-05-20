@@ -6,8 +6,9 @@ import fs from 'fs';
 import path from 'path';
 
 /**
- * Node import
+ * NPM import
  */
+import dotenv from 'dotenv';
 import PDFDocument from 'pdfkit';
 
 /**
@@ -22,6 +23,9 @@ import errorHandler from '../utils/error-handler';
 /**
  * Code
  */
+// Environment variables
+dotenv.config();
+
 const ITEMS_PER_PAGE = 4;
 
 const getIndex = (req, res, next) => {
@@ -151,14 +155,28 @@ const getOrders = (req, res, next) => {
 };
 
 const postOrder = (req, res, next) => {
+  // Require & init strip with API KEY
+  // eslint-disable-next-line global-require
+  const stripe = require('stripe')(process.env.STRIPE_API_KEY);
+  // Getting the stripe token
+  const token = req.body.stripeToken;
+  // Initialize total cart value
+  let totalSum = 0;
+
   req.user
     .populate('cart.items.productId')
     .execPopulate()
     .then(user => {
+      // Setting cart total value
+      totalSum = user.cart.items.reduce(
+        (total, product) => total + product.quantity * product.productId.price,
+        0
+      );
+      // Getting user cart products
       const products = user.cart.items.map(item => {
         return { product: { ...item.productId._doc }, quantity: item.quantity };
       });
-
+      // Creating the order
       const order = new Order({
         products,
         user: {
@@ -166,10 +184,20 @@ const postOrder = (req, res, next) => {
           userId: req.user,
         },
       });
-
+      // Saving the order
       return order.save();
     })
-    .then(response => req.user.clearCart())
+    .then(response => {
+      // Stripe charging the user
+      stripe.charges.create({
+        amount: totalSum * 100,
+        currency: 'usd',
+        description: 'Shop test order',
+        source: token,
+        metadata: { order_id: response._id.toString() },
+      });
+      req.user.clearCart();
+    })
     .then(response => res.redirect('/orders'))
     .catch(errorHandler(next));
 };

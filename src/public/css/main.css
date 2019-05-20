@@ -172,6 +172,7 @@ button:focus {
 
 .cart-total {
   font-size: 1.4em;
+  margin: 1em;
 }
 
 /* Order */

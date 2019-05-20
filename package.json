@@ -42,6 +42,7 @@
     "nodemailer": "^6.1.1",
     "nodemailer-sendgrid-transport": "^0.2.0",
     "pdfkit": "^0.9.1",
+    "stripe": "^7.0.0",
     "uuid": "^3.3.2"
   }
 }
