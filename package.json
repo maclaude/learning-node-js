@@ -2,6 +2,8 @@
   "name": "nodejs-course",
   "version": "1.0.0",
   "description": "Learning Node JS",
+  "author": "Marc-Antoine CLAUDE",
+  "license": "ISC",
   "main": "app.js",
   "engines": {
     "node": "10.16.0"
@@ -20,12 +22,9 @@
     "prettier": "^1.17.0"
   },
   "scripts": {
-    "clean": "rm -rf dist",
-    "clean:all": "rm -rf dist node_modules",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --exec babel-node app.js",
-    "build": "babel src --out-dir dist",
-    "serve": "node dist/server.js",
+    "start": "node app.js",
+    "start:dev": "nodemon app.js",
     "lint": "eslint ."
   },
   "dependencies": {
