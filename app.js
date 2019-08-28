@@ -2,6 +2,7 @@
  * Node Core Modules import
  */
 const path = require('path');
+const fs = require('fs');
 
 /**
  * NPM import
@@ -19,6 +20,7 @@ const multer = require('multer');
 const uuidV4 = require('uuid/v4');
 const helmet = require('helmet');
 const compression = require('compression');
+const morgan = require('morgan');
 
 /**
  * Local import
@@ -91,9 +93,21 @@ const fileFilter = (req, file, callback) => {
 
 // Set view engine configuration
 app.set('view engine', 'ejs');
-
 // Set views directory path
 app.set('views', 'views');
+
+// Create a write stream for morgan (in append mode)
+const accessLogStream = fs.createWriteStream(
+  path.join(__dirname, 'access.log'),
+  { flags: 'a' }
+);
+
+// Helmet initilization (Secure http response header)
+app.use(helmet());
+// NodeJS assets compression middleware
+app.use(compression());
+// Morgan HTTP request logger middleware
+app.use(morgan('combined', { stream: accessLogStream }));
 
 /**
  * Middlewares
@@ -156,12 +170,6 @@ app.use((req, res, next) => {
       });
   }
 });
-
-// Helmet initilization (Secure http response header)
-app.use(helmet());
-
-// NodeJS assets compression middleware
-app.use(compression());
 
 // Routes
 app.use('/admin', adminRoutes);
