@@ -3,7 +3,6 @@
  */
 const path = require('path');
 const fs = require('fs');
-const https = require('https');
 
 /**
  * NPM import
@@ -64,10 +63,6 @@ const store = new MongodbSession({
 
 // CSRF protection
 const csrfProtection = csrf();
-
-// SSL privateKey & certificate
-const privateKey = fs.readFileSync('server.key');
-const certificate = fs.readFileSync('server.cert');
 
 // Multer file storage
 const fileStorage = multer.diskStorage({
@@ -203,9 +198,6 @@ mongoose
   .connect(DB_URI, { useNewUrlParser: true })
   .then(response => {
     console.log('Connected');
-    // Create & start the server with SSL protection
-    https
-      .createServer({ key: privateKey, cert: certificate }, app)
-      .listen(process.env.PORT || 3000);
+    app.listen(process.env.PORT || 3000);
   })
   .catch(err => console.error(err));

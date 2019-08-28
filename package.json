@@ -2,6 +2,10 @@
   "name": "nodejs-course",
   "version": "1.0.0",
   "description": "Learning Node JS",
+  "main": "app.js",
+  "engines": {
+    "node": "10.16.0"
+  },
   "devDependencies": {
     "@babel/cli": "^7.4.3",
     "@babel/core": "^7.4.3",
