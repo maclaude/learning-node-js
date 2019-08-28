@@ -39,11 +39,15 @@ dotenv.config();
 // Init express
 const app = express();
 
-// Database password
-const { DB_PASSWORD } = process.env;
+// Database environment variables
+const {
+  MONGO_DB_USER,
+  MONGO_DB_PASSWORD,
+  MONGO_DB_DEFAULT_DATABASE,
+} = process.env;
 
 // Database URI
-const DB_URI = `mongodb+srv://maclaude:${DB_PASSWORD}@node-js-qfuuy.mongodb.net/shop?retryWrites=true`;
+const DB_URI = `mongodb+srv://${MONGO_DB_USER}:${MONGO_DB_PASSWORD}@node-js-qfuuy.mongodb.net/${MONGO_DB_DEFAULT_DATABASE}?retryWrites=true`;
 
 // MongoDB Session Storage
 const MongodbSession = connectMongodbSession(session);
@@ -179,6 +183,6 @@ mongoose
   .then(response => {
     console.log('Connected');
     // Start the server
-    app.listen(3000);
+    app.listen(process.env.PORT || 3000);
   })
   .catch(err => console.error(err));
