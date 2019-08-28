@@ -11,4 +11,4 @@ const errorHandler = next => err => {
 /**
  * Export
  */
-export default errorHandler;
+module.exports = errorHandler;

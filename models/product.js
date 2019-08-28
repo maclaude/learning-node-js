@@ -1,7 +1,7 @@
 /**
  * NPM import
  */
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 /**
  * Code
@@ -35,4 +35,4 @@ const productSchema = new Schema({
 /**
  * Export
  */
-export default mongoose.model('Product', productSchema);
+module.exports = mongoose.model('Product', productSchema);

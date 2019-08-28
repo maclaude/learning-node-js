@@ -14,4 +14,4 @@ const isAuth = (req, res, next) => {
 /**
  * Export
  */
-export default isAuth;
+module.exports = isAuth;

@@ -10,4 +10,4 @@ const checkForErrors = req => {
 /**
  * Export
  */
-export default checkForErrors;
+module.exports = checkForErrors;

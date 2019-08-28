@@ -1,7 +1,7 @@
 /**
  * Node Core Module import
  */
-import fs from 'fs';
+const fs = require('fs');
 
 /**
  * Code
@@ -17,4 +17,4 @@ const deleteFile = filePath => {
 /**
  * Export
  */
-export default deleteFile;
+module.exports = deleteFile;

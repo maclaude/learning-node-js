@@ -3,21 +3,21 @@
 /**
  * NPM import
  */
-import { validationResult } from 'express-validator/check';
+const validationResult = require('express-validator/check');
 
 /**
  * Local import
  */
 // Models
-import Product from '../models/product';
+const Product = require('../models/product');
 // Utils
-import errorHandler from '../utils/error-handler';
-import deleteFile from '../utils/delete-file';
+const errorHandler = require('../utils/error-handler');
+const deleteFile = require('../utils/delete-file');
 
 /**
  * Code
  */
-const getAddProduct = (req, res, next) => {
+exports.getAddProduct = (req, res, next) => {
   res.render('admin/edit-product', {
     pageTitle: 'Add Product',
     path: '/admin/add-product',
@@ -28,7 +28,7 @@ const getAddProduct = (req, res, next) => {
   });
 };
 
-const postAddProduct = (req, res, next) => {
+exports.postAddProduct = (req, res, next) => {
   const { title, description, price } = req.body;
   const image = req.file;
 
@@ -78,7 +78,7 @@ const postAddProduct = (req, res, next) => {
     .catch(errorHandler(next));
 };
 
-const getProducts = (req, res, next) => {
+exports.getProducts = (req, res, next) => {
   const { _id: currentUserId } = req.user;
   // Filtering products of the current logged in user
   Product.find({ userId: currentUserId })
@@ -92,7 +92,7 @@ const getProducts = (req, res, next) => {
     .catch(errorHandler(next));
 };
 
-const getEditProduct = (req, res, next) => {
+exports.getEditProduct = (req, res, next) => {
   // Adding a query parameter (optionnal)
   const editMode = req.query.edit;
 
@@ -120,7 +120,7 @@ const getEditProduct = (req, res, next) => {
     .catch(errorHandler(next));
 };
 
-const postEditProduct = (req, res, next) => {
+exports.postEditProduct = (req, res, next) => {
   const { title, price, description, productId } = req.body;
   const { _id: currentUserId } = req.user;
   const image = req.file;
@@ -168,7 +168,7 @@ const postEditProduct = (req, res, next) => {
     .catch(errorHandler(next));
 };
 
-const deleteProduct = (req, res, next) => {
+exports.deleteProduct = (req, res, next) => {
   const { productId } = req.params;
   const { _id: currentUserId } = req.user;
   Product.findById(productId)
@@ -187,16 +187,4 @@ const deleteProduct = (req, res, next) => {
     .catch(err => {
       res.status(500).json({ message: 'Deleting product failed' });
     });
-};
-
-/**
- * Export
- */
-export {
-  getAddProduct,
-  postAddProduct,
-  getProducts,
-  getEditProduct,
-  postEditProduct,
-  deleteProduct,
 };

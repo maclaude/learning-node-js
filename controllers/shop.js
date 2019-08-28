@@ -1,24 +1,25 @@
 // Shop Controller
+
 /**
  * Node Core Module import
  */
-import fs from 'fs';
-import path from 'path';
+const fs = require('fs');
+const path = require('path');
 
 /**
  * NPM import
  */
-import dotenv from 'dotenv';
-import PDFDocument from 'pdfkit';
+const dotenv = require('dotenv');
+const PDFDocument = require('pdfkit');
 
 /**
  * Local import
  */
 // Models
-import Product from '../models/product';
-import Order from '../models/order';
+const Product = require('../models/product');
+const Order = require('../models/order');
 // Utils
-import errorHandler from '../utils/error-handler';
+const errorHandler = require('../utils/error-handler');
 
 /**
  * Code
@@ -28,7 +29,7 @@ dotenv.config();
 
 const ITEMS_PER_PAGE = 4;
 
-const getIndex = (req, res, next) => {
+exports.getIndex = (req, res, next) => {
   const { page } = req.query;
   // if page is undefined set value to 1
   const currentPage = parseInt(page, 10) || 1;
@@ -63,7 +64,7 @@ const getIndex = (req, res, next) => {
     .catch(errorHandler(next));
 };
 
-const getProducts = (req, res, next) => {
+exports.getProducts = (req, res, next) => {
   const { page } = req.query;
   const currentPage = parseInt(page, 10) || 1;
 
@@ -93,7 +94,7 @@ const getProducts = (req, res, next) => {
     .catch(errorHandler(next));
 };
 
-const getProduct = (req, res, next) => {
+exports.getProduct = (req, res, next) => {
   const { productId } = req.params;
 
   Product.findById(productId)
@@ -107,7 +108,7 @@ const getProduct = (req, res, next) => {
     .catch(errorHandler(next));
 };
 
-const getCart = (req, res, next) => {
+exports.getCart = (req, res, next) => {
   req.user
     .populate('cart.items.productId') // To get the data of the relation
     .execPopulate() // In order to get a promise
@@ -122,7 +123,7 @@ const getCart = (req, res, next) => {
     .catch(errorHandler(next));
 };
 
-const postCart = (req, res, next) => {
+exports.postCart = (req, res, next) => {
   const { productId } = req.body;
 
   Product.findById(productId)
@@ -133,7 +134,7 @@ const postCart = (req, res, next) => {
     .catch(errorHandler(next));
 };
 
-const postCartDeleteProduct = (req, res, next) => {
+exports.postCartDeleteProduct = (req, res, next) => {
   const { productId } = req.body;
 
   req.user
@@ -142,7 +143,7 @@ const postCartDeleteProduct = (req, res, next) => {
     .catch(errorHandler(next));
 };
 
-const getOrders = (req, res, next) => {
+exports.getOrders = (req, res, next) => {
   Order.find({ 'user.userId': req.user })
     .then(orders => {
       res.render('shop/orders', {
@@ -154,7 +155,7 @@ const getOrders = (req, res, next) => {
     .catch(errorHandler(next));
 };
 
-const postOrder = (req, res, next) => {
+exports.postOrder = (req, res, next) => {
   // Require & init strip with API KEY
   // eslint-disable-next-line global-require
   const stripe = require('stripe')(process.env.STRIPE_API_KEY);
@@ -202,7 +203,7 @@ const postOrder = (req, res, next) => {
     .catch(errorHandler(next));
 };
 
-const getInvoice = (req, res, next) => {
+exports.getInvoice = (req, res, next) => {
   const { orderId } = req.params;
   // Finding the order in the database
   Order.findById(orderId)
@@ -249,7 +250,7 @@ const getInvoice = (req, res, next) => {
     .catch(err => next(err));
 };
 
-const getCheckout = (req, res, next) => {
+exports.getCheckout = (req, res, next) => {
   req.user
     .populate('cart.items.productId') // To get the data of the relation
     .execPopulate() // In order to get a promise
@@ -267,20 +268,4 @@ const getCheckout = (req, res, next) => {
       });
     })
     .catch(errorHandler(next));
-};
-
-/**
- * Export
- */
-export {
-  getIndex,
-  getProducts,
-  getProduct,
-  getCart,
-  postCart,
-  postCartDeleteProduct,
-  getOrders,
-  postOrder,
-  getInvoice,
-  getCheckout,
 };

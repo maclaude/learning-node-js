@@ -1,7 +1,7 @@
 /**
  * NPM import
  */
-import { body } from 'express-validator/check';
+const { body } = require('express-validator/check');
 
 /**
  * Code
@@ -20,4 +20,4 @@ const productFormValidation = [
 /**
  * Export
  */
-export default productFormValidation;
+module.exports = productFormValidation;

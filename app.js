@@ -1,34 +1,34 @@
 /**
  * Node Core Modules import
  */
-import path from 'path';
+const path = require('path');
 
 /**
  * NPM import
  */
-import express from 'express';
-import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';
-import dotenv from 'dotenv';
-import mongoose from 'mongoose';
-import session from 'express-session';
-import connectMongodbSession from 'connect-mongodb-session';
-import csrf from 'csurf';
-import flash from 'connect-flash';
-import multer from 'multer';
-import uuidV4 from 'uuid/v4';
+const express = require('express');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const dotenv = require('dotenv');
+const mongoose = require('mongoose');
+const session = require('express-session');
+const connectMongodbSession = require('connect-mongodb-session');
+const csrf = require('csurf');
+const flash = require('connect-flash');
+const multer = require('multer');
+const uuidV4 = require('uuid/v4');
 
 /**
  * Local import
  */
 // Models
-import User from './models/user';
+const User = require('./models/user');
 // Controllers middleware functions
-import { get404, get500 } from './controllers/error';
+const { get404, get500 } = require('./controllers/error');
 // Routes
-import adminRoutes from './routes/admin';
-import shopRoutes from './routes/shop';
-import authRoutes from './routes/auth';
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
+const authRoutes = require('./routes/auth');
 
 /**
  * Code
@@ -59,7 +59,7 @@ const csrfProtection = csrf();
 // Multer file storage
 const fileStorage = multer.diskStorage({
   destination: (req, file, callback) => {
-    callback(null, 'src/images');
+    callback(null, 'images');
   },
   filename: (req, file, callback) => {
     const fileName = `${uuidV4()}-${file.originalname}`;
@@ -87,7 +87,7 @@ const fileFilter = (req, file, callback) => {
 app.set('view engine', 'ejs');
 
 // Set views directory path
-app.set('views', 'src/views');
+app.set('views', 'views');
 
 /**
  * Middlewares

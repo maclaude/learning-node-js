@@ -3,25 +3,25 @@
 /**
  * Node Core Modules import
  */
-import crypto from 'crypto';
+const crypto = require('crypto');
 
 /**
  * NPM import
  */
-import dotenv from 'dotenv';
-import bcrypt from 'bcryptjs';
-import nodemailer from 'nodemailer';
-import sendgridTransport from 'nodemailer-sendgrid-transport';
-import { validationResult } from 'express-validator/check';
+const dotenv = require('dotenv');
+const bcrypt = require('bcryptjs');
+const nodemailer = require('nodemailer');
+const sendgridTransport = require('nodemailer-sendgrid-transport');
+const { validationResult } = require('express-validator/check');
 
 /**
  * Local import
  */
 // Models
-import User from '../models/user';
+const User = require('../models/user');
 // Utils
-import checkForErrors from '../utils/check-for-errors';
-import errorHandler from '../utils/error-handler';
+const checkForErrors = require('../utils/check-for-errors');
+const errorHandler = require('../utils/error-handler');
 
 /**
  * Code
@@ -39,7 +39,7 @@ const transporter = nodemailer.createTransport(
 );
 
 // Middleware functions
-const getLogin = (req, res, next) => {
+exports.getLogin = (req, res, next) => {
   res.render('auth/login', {
     pageTitle: 'Login',
     path: '/login',
@@ -49,7 +49,7 @@ const getLogin = (req, res, next) => {
   });
 };
 
-const postLogin = (req, res, next) => {
+exports.postLogin = (req, res, next) => {
   const { email, password } = req.body;
 
   const errors = validationResult(req);
@@ -107,7 +107,7 @@ const postLogin = (req, res, next) => {
     .catch(errorHandler(next));
 };
 
-const getSignup = (req, res, next) => {
+exports.getSignup = (req, res, next) => {
   res.render('auth/signup', {
     pageTitle: 'Signup',
     path: '/signup',
@@ -117,7 +117,7 @@ const getSignup = (req, res, next) => {
   });
 };
 
-const postSignup = (req, res, next) => {
+exports.postSignup = (req, res, next) => {
   const { name, email, password, confirmPassword } = req.body;
 
   const errors = validationResult(req);
@@ -157,7 +157,7 @@ const postSignup = (req, res, next) => {
     .catch(errorHandler(next));
 };
 
-const getResetPassword = (req, res, next) => {
+exports.getResetPassword = (req, res, next) => {
   res.render('auth/reset-password', {
     pageTitle: 'Reset Password',
     path: '/reset-password',
@@ -165,7 +165,7 @@ const getResetPassword = (req, res, next) => {
   });
 };
 
-const postResetPassword = (req, res, next) => {
+exports.postResetPassword = (req, res, next) => {
   // Generating random bytes (token)
   crypto.randomBytes(32, (err, buffer) => {
     if (err) {
@@ -210,7 +210,7 @@ const postResetPassword = (req, res, next) => {
   });
 };
 
-const getNewPassword = (req, res, next) => {
+exports.getNewPassword = (req, res, next) => {
   const { token } = req.params;
   // Finding the user by token & checking the token validity (expiration date)
   User.findOne({
@@ -231,7 +231,7 @@ const getNewPassword = (req, res, next) => {
     .catch(errorHandler(next));
 };
 
-const postNewPassword = (req, res, next) => {
+exports.postNewPassword = (req, res, next) => {
   const { newPassword, userId, passwordToken } = req.body;
   let resetUser;
   // Finding the user by id & token and checking the token validity (expiration date)
@@ -257,21 +257,6 @@ const postNewPassword = (req, res, next) => {
     .catch(errorHandler(next));
 };
 
-const postLogout = (req, res, next) => {
+exports.postLogout = (req, res, next) => {
   req.session.destroy(err => res.redirect('/'));
-};
-
-/**
- * Export
- */
-export {
-  getLogin,
-  postLogin,
-  getSignup,
-  postSignup,
-  getResetPassword,
-  postResetPassword,
-  getNewPassword,
-  postNewPassword,
-  postLogout,
 };

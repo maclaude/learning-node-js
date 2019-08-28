@@ -1,7 +1,7 @@
 /**
  * NPM import
  */
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 /**
  * Code
@@ -88,4 +88,4 @@ userSchema.methods.clearCart = function clearCart() {
 /**
  * Export
  */
-export default mongoose.model('User', userSchema);
+module.exports = mongoose.model('User', userSchema);

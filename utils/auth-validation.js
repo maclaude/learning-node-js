@@ -3,17 +3,17 @@
 /**
  * NPM import
  */
-import { check, body } from 'express-validator/check';
+const { check, body } = require('express-validator/check');
 
 /**
  * Local import
  */
-import User from '../models/user';
+const User = require('../models/user');
 
 /**
  * Code
  */
-const signupValidation = [
+exports.signupValidation = [
   check('email')
     .isEmail()
     .withMessage('Please enter a valid email')
@@ -40,7 +40,7 @@ const signupValidation = [
     }),
 ];
 
-const loginValidation = [
+exports.loginValidation = [
   check('email')
     .isEmail()
     .withMessage('Please enter a valid email'),
@@ -48,8 +48,3 @@ const loginValidation = [
     .isLength({ min: 8 })
     .trim(),
 ];
-
-/**
- * Export
- */
-export { signupValidation, loginValidation };
