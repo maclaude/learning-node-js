@@ -17,6 +17,8 @@ const csrf = require('csurf');
 const flash = require('connect-flash');
 const multer = require('multer');
 const uuidV4 = require('uuid/v4');
+const helmet = require('helmet');
+const compression = require('compression');
 
 /**
  * Local import
@@ -154,6 +156,12 @@ app.use((req, res, next) => {
       });
   }
 });
+
+// Helmet initilization (Secure http response header)
+app.use(helmet());
+
+// NodeJS assets compression middleware
+app.use(compression());
 
 // Routes
 app.use('/admin', adminRoutes);
